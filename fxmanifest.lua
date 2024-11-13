@@ -20,7 +20,7 @@ server_scripts {
 }
 
 shared_scripts {
-    'shared/config.lua',
+    'config/config.lua',
     '@qb-core/shared/locale.lua',
     -- '@ox_lib/init.lua', -- OX_Lib, only line this in if you have ox_lib and are using them.
     'locales/en.lua', -- English Locales
