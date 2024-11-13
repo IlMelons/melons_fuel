@@ -1,8 +1,5 @@
 if not Config.ElectricVehicleCharging then return end
 
--- Variables
-local QBCore = exports[Config.Core]:GetCoreObject()
-
 -- Functions
 local function GlobalTax(value)
 	local tax = (value / 100 * Config.GlobalTax)
@@ -20,7 +17,7 @@ RegisterNetEvent("cdn-fuel:server:electric:OpenMenu", function(amount, inGasStat
 	local total = tonumber(FuelCost + tax)
 	if not amount then 
 		if Config.FuelDebug then print("Electric Recharge Amount is invalid!") end
-		return server.Notify(src, Lang:t("electric_more_than_zero"), "error")
+		return server.Notify(src, locale("electric_more_than_zero"), "error")
 	end
 	Wait(50)
 	if inGasStation and not hasWeapon then
