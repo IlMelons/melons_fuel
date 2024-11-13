@@ -4,7 +4,7 @@ SHConfig = require "config.config"
 
 server = {}
 
-function server.Notify(msg, type)
+function server.Notify(source, msg, type)
     TriggerClientEvent("ox_lib:notify", source, {
         title = SHConfig.Notify.title,
         description = msg,
