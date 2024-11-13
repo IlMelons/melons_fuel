@@ -29,44 +29,8 @@ RegisterNetEvent("cdn-fuel:server:OpenMenu", function(amount, inGasStation, hasW
 		if Config.RenewedPhonePayment and purchasetype == "bank" then
 			TriggerClientEvent("cdn-fuel:client:phone:PayForFuel", src, amount)
 		else
-			if Config.Ox.Menu then
-				if Config.FuelDebug then print("going to open the context menu (OX)") end
-				TriggerClientEvent('cdn-fuel:client:OpenContextMenu', src, total, amount, purchasetype)
-			else
-				TriggerClientEvent('qb-menu:client:openMenu', src, {
-					{
-						header = Lang:t("menu_refuel_header"),
-						isMenuHeader = true,
-						icon = "fas fa-gas-pump",
-					},
-					{
-						header = "",
-						icon = "fas fa-info-circle",
-						isMenuHeader = true,
-						txt = Lang:t("menu_purchase_station_header_1")..math.ceil(total)..Lang:t("menu_purchase_station_header_2") ,
-					},
-					{
-						header = Lang:t("menu_purchase_station_confirm_header"),
-						icon = "fas fa-check-circle",
-						txt = Lang:t("menu_refuel_accept"),
-						params = {
-							event = "cdn-fuel:client:RefuelVehicle",
-							args = {
-								fuelamounttotal = amount,
-								purchasetype = purchasetype,
-							}
-						}
-					},
-					{
-						header = Lang:t("menu_header_close"),
-						txt = Lang:t("menu_refuel_cancel"),
-						icon = "fas fa-times-circle",
-						params = {
-							event = "qb-menu:closeMenu",
-						}
-					},
-				})
-			end
+			if Config.FuelDebug then print("going to open the context menu (OX)") end
+			TriggerClientEvent('cdn-fuel:client:OpenContextMenu', src, total, amount, purchasetype)
 		end
 	end
 end)
@@ -216,25 +180,4 @@ end)
 
 RegisterNetEvent('cdn-syphoning:callcops', function(coords)
     TriggerClientEvent('cdn-syphoning:client:callcops', -1, coords)
-end)
-
---- Update Alerts
-local updatePath
-local resourceName
-
-local function checkVersion(err, responseText, headers)
-    local curVersion = LoadResourceFile(GetCurrentResourceName(), "version")
-	if responseText == nil then print("^1"..resourceName.." check for updates failed ^7") return end
-    if curVersion ~= nil and responseText ~= nil then
-		if curVersion == responseText then Color = "^2" else Color = "^1" end
-        print("\n^1----------------------------------------------------------------------------------^7")
-        print(resourceName.."'s latest version is: ^2"..responseText.."!\n^7Your current version: "..Color..""..curVersion.."^7!\nIf needed, update from https://github.com"..updatePath.."")
-        print("^1----------------------------------------------------------------------------------^7")
-    end
-end
-
-CreateThread(function()
-	updatePath = "/CodineDev/cdn-fuel"
-	resourceName = "cdn-fuel ("..GetCurrentResourceName()..")"
-	PerformHttpRequest("https://raw.githubusercontent.com"..updatePath.."/master/version", checkVersion, "GET")
 end)
