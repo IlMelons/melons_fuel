@@ -1,7 +1,10 @@
 if GetResourceState("qbx_core") ~= "started" then return end
 
+QBX = exports.qbx_core
+
 SHConfig = require "config.config"
 
+---@diagnostic disable: duplicate-set-field
 server = {}
 
 function server.Notify(source, msg, type)
