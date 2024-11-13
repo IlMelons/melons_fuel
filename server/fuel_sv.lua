@@ -26,13 +26,13 @@ RegisterNetEvent("cdn-fuel:server:OpenMenu", function(amount, inGasStation, hasW
 	end
 end)
 
-RegisterNetEvent("melons_fuel:server:PayForFuel", function(amount, type, FuelPrice, electric)
+RegisterNetEvent("melons_fuel:server:PayForFuel", function(amount, type, electric)
 	local src = source
 	local total = math.ceil(amount)
 	if amount < 1 then
 		total = 0
 	end
-	local payText = electric and locale("menu_ev_pay_label_1")..FuelPrice..locale("menu_ev_pay_label_2") or locale("menu_pay_label_1")..FuelPrice..locale("menu_pay_label_2")
+	local payText = electric and locale("pay_ev_comment") or locale("pay_fv_comment")
 	server.PayFuel(src, total, payText, type)
 end)
 
