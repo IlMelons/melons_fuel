@@ -33,7 +33,7 @@ RegisterNetEvent("melons_fuel:server:PayForFuel", function(amount, type, electri
 		total = 0
 	end
 	local payText = electric and locale("pay_ev_comment") or locale("pay_fv_comment")
-	server.PayFuel(src, total, payText, type)
+	server.PayFuel(src, type, total, payText)
 end)
 
 RegisterNetEvent("cdn-fuel:server:purchase:jerrycan", function(purchasetype)
