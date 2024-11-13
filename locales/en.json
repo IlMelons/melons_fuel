@@ -54,8 +54,8 @@
     "menu_electric_cancel": "I actually don't want to charge my car anymore.",
     "menu_electric_header": "Electric Charger",
     "menu_electric_accept": "I would like to pay for electricity.",
-    "menu_electric_payment_label_1": "Electricity @ ",
-    "menu_electric_payment_label_2": " / KW",
+    "menu_ev_pay_label_1": "Electricity @ ",
+    "menu_ev_pay_label_2": " / KW",
 
     "menu_jerry_can_purchase_header": "Purchase Jerry Can for $",
     "menu_jerry_can_footer_full_gas": "Your Jerry Can is full!",

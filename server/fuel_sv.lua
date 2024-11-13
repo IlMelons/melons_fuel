@@ -32,7 +32,7 @@ RegisterNetEvent("melons_fuel:server:PayForFuel", function(amount, type, FuelPri
 	if amount < 1 then
 		total = 0
 	end
-	local payText = electric and locale("menu_electric_payment_label_1")..FuelPrice..locale("menu_electric_payment_label_2") or locale("menu_pay_label_1")..FuelPrice..locale("menu_pay_label_2")
+	local payText = electric and locale("menu_ev_pay_label_1")..FuelPrice..locale("menu_ev_pay_label_2") or locale("menu_pay_label_1")..FuelPrice..locale("menu_pay_label_2")
 	server.PayFuel(src, total, payText, type)
 end)
 
