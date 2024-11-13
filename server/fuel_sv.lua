@@ -7,15 +7,6 @@ local function GlobalTax(value)
 	return tax
 end
 
---- Events
-if Config.RenewedPhonePayment then
-	RegisterNetEvent('cdn-fuel:server:phone:givebackmoney', function(amount)
-		local src = source
-		local player = QBCore.Functions.GetPlayer(src)
-		player.Functions.AddMoney("bank", math.ceil(amount), Lang:t("phone_refund_payment_label"))
-	end)
-end
-
 RegisterNetEvent("cdn-fuel:server:OpenMenu", function(amount, inGasStation, hasWeapon, purchasetype, FuelPrice)
 	local src = source
 	if not src then return end
@@ -35,26 +26,14 @@ RegisterNetEvent("cdn-fuel:server:OpenMenu", function(amount, inGasStation, hasW
 	end
 end)
 
-RegisterNetEvent("cdn-fuel:server:PayForFuel", function(amount, purchasetype, FuelPrice, electric)
+RegisterNetEvent("melons_fuel:server:PayForFuel", function(amount, type, FuelPrice, electric)
 	local src = source
-	if not src then return end
-	local Player = QBCore.Functions.GetPlayer(src)
-	if not Player then return end
 	local total = math.ceil(amount)
 	if amount < 1 then
 		total = 0
 	end
-	local moneyremovetype = purchasetype
-	if Config.FuelDebug then print("Player is attempting to purchase fuel with the money type: " ..moneyremovetype) end
-	if Config.FuelDebug then print("Attempting to charge client: $"..total.." for Fuel @ "..FuelPrice.." PER LITER | PER KW") end
-	if purchasetype == "bank" then
-		moneyremovetype = "bank"
-	elseif purchasetype == "cash" then
-		moneyremovetype = "cash"
-	end
-	local payString = Lang:t("menu_pay_label_1") ..FuelPrice..Lang:t("menu_pay_label_2")
-	if electric then payString = Lang:t("menu_electric_payment_label_1") ..FuelPrice..Lang:t("menu_electric_payment_label_2") end
-	Player.Functions.RemoveMoney(moneyremovetype, total, payString)
+	local payText = electric and locale("menu_electric_payment_label_1")..FuelPrice..locale("menu_electric_payment_label_2") or locale("menu_pay_label_1")..FuelPrice..locale("menu_pay_label_2")
+	server.PayFuel(src, total, payText, type)
 end)
 
 RegisterNetEvent("cdn-fuel:server:purchase:jerrycan", function(purchasetype)
