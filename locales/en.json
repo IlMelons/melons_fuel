@@ -1,4 +1,8 @@
 {
+    "pay_fv_comment": "Refueled Vehicle",
+    "pay_ev_comment": "Charged Vehicle",
+
+
     "set_fuel_debug": "Set fuel to:",
     "cancelled": "Cancelled.",
     "not_enough_money": "You don't have enough money!",
