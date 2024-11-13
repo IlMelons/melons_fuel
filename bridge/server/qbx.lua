@@ -15,3 +15,13 @@ function server.Notify(source, msg, type)
         type = type,
     })
 end
+
+function server.PayFuel(source, type, total, payText)
+    local player = exports.qbx_core:GetPlayer(source)
+    local balance = player.Functions.GetMoney(type)
+    if balance < total then
+        return server.Notify(source, "You don't have enough money", "error")
+    else
+        player.Functions.RemoveMoney(type, total, payText)
+    end
+end
