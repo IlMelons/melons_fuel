@@ -1,8 +1,17 @@
-fx_version 'cerulean'
-game 'gta5'
-author 'https://www.github.com/CodineDev' -- Base Refueling System: (https://github.com/InZidiuZ/LegacyFuel), other code by Codine (https://www.github.com/CodineDev).
-description 'cdn-fuel'
-version '2.1.9'
+fx_version "cerulean"
+game "gta5"
+lua54 "yes"
+
+author "IlMelons" -- Original Script Author: (https://www.github.com/CodineDev)
+description "Fuel system for FiveM"
+version "1.0.0"
+
+ox_lib "locale"
+
+shared_scripts {
+    "@ox_lib/init.lua"
+    "config/config.lua"
+}
 
 client_scripts {
     '@PolyZone/client.lua',
@@ -19,23 +28,14 @@ server_scripts {
     '@oxmysql/lib/MySQL.lua',
 }
 
-shared_scripts {
-    'config/config.lua',
-    '@qb-core/shared/locale.lua',
-    -- '@ox_lib/init.lua', -- OX_Lib, only line this in if you have ox_lib and are using them.
-    'locales/en.lua', -- English Locales
-    -- 'locales/de.lua', -- German / Deutsch Locales
-    -- 'locales/fr.lua', -- French / Français Locales
-    -- 'locales/es.lua', -- Spanish / Español / Española Locales
-    -- 'locales/ee.lua', -- Estonian Locales
+files {
+    "locales/*.json"
 }
 
 exports { -- Call with exports['cdn-fuel']:GetFuel or exports['cdn-fuel']:SetFuel
     'GetFuel',
     'SetFuel'
 }
-
-lua54 'yes'
 
 dependencies { -- Make sure these are started before cdn-fuel in your server.cfg!
     'PolyZone',
