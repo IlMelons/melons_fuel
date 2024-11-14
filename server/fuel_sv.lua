@@ -7,22 +7,22 @@ local function GlobalTax(value)
 	return tax
 end
 
-RegisterNetEvent("cdn-fuel:server:OpenMenu", function(amount, inGasStation, hasWeapon, purchasetype, FuelPrice)
+RegisterNetEvent("melons_fuel:server:OpenMenu", function(amount, inGasStation, hasWeapon, purchasetype, FuelPrice)
 	local src = source
-	if not src then return end
-	local player = QBCore.Functions.GetPlayer(src)
-	if not player then return end
-	if not amount then if Config.FuelDebug then print("Amount is invalid!") end TriggerClientEvent('QBCore:Notify', src, Lang:t("more_than_zero"), 'error') return end
+	if not src then return lib.print.debug("Source not found: ", src) end
+	local Player = server.GetPlayer(src)
+	if not Player then return lib.print.debug("Player not found: ", Player) end
+	if not amount then
+		server.Notify(src, locale("more_than_zero"), "error")
+		lib.print.debug("Amount is invalid!", amount)
+		return
+	end
 	local FuelCost = amount*FuelPrice
 	local tax = GlobalTax(FuelCost)
 	local total = tonumber(FuelCost + tax)
-	if inGasStation == true and not hasWeapon then
-		if Config.RenewedPhonePayment and purchasetype == "bank" then
-			TriggerClientEvent("cdn-fuel:client:phone:PayForFuel", src, amount)
-		else
-			if Config.FuelDebug then print("going to open the context menu (OX)") end
-			TriggerClientEvent('cdn-fuel:client:OpenContextMenu', src, total, amount, purchasetype)
-		end
+	if inGasStation and not hasWeapon then
+		TriggerClientEvent("cdn-fuel:client:OpenContextMenu", src, total, amount, purchasetype)
+		lib.print.debug("Going to open the context menu")
 	end
 end)
 
