@@ -28,12 +28,15 @@ end)
 
 RegisterNetEvent("melons_fuel:server:PayForFuel", function(amount, type, electric)
 	local src = source
+	if not src then return lib.print.debug("Source not found: ", src) end
+	Player = server.GetPlayer(src)
+	if not Player then return lib.print.debug("Player not found: ", Player) end
 	local total = math.ceil(amount)
 	if amount < 1 then
 		total = 0
 	end
 	local payText = electric and locale("pay_ev_comment") or locale("pay_fv_comment")
-	server.PayFuel(src, type, total, payText)
+	server.PayFuel(Player, type, total, payText)
 end)
 
 RegisterNetEvent("cdn-fuel:server:purchase:jerrycan", function(purchasetype)
