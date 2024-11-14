@@ -689,8 +689,33 @@ if Config.ElectricChargerModel then
     end)
 end
 
--- Resource Stop
-AddEventHandler('onResourceStop', function(resource)
+local evNozzleOptions = {
+    {
+        label = locale("grab_electric_nozzle"),
+        name = "grab_ev_nozzle",
+        icon = "fas fa-bolt",
+        distance = 2.0,
+        canInteract = function()
+            return not IsHoldingElectricNozzle() and not IsPedInAnyVehicle(PlayerPedId())
+        end
+        event = "cdn-fuel:client:grabelectricnozzle",
+    }
+    {
+        label = locale("return_nozzle"),
+        name = "return_ev_nozzle",
+        icon = "fas fa-hand",
+        distance = 2.0,
+        canInteract = function()
+            return IsHoldingElectricNozzle() and not refueling
+        end
+        event = "cdn-fuel:client:returnnozzle",
+    }
+}
+
+exports.ox_target:AddModel("electric_charger", evNozzleOptions)
+
+---@description REMOVE ENTITIES IN RESOURCE STOP
+AddEventHandler("onResourceStop", function(resource)
     if resource == GetCurrentResourceName() then
         for i = 1, #Config.GasStations do
             if Config.GasStations[i].electricchargercoords ~= nil then
@@ -704,39 +729,3 @@ AddEventHandler('onResourceStop', function(resource)
         end
     end
 end)
-
--- Target
-local TargetResource = Config.TargetResource
-if Config.TargetResource == 'ox_target' then
-    TargetResource = 'qb-target'
-end
-
-exports[TargetResource]:AddTargetModel('electric_charger', {
-    options = {
-        {
-            num = 1,
-            type = "client",
-            event = "cdn-fuel:client:grabelectricnozzle",
-            icon = "fas fa-bolt",
-            label = Lang:t("grab_electric_nozzle"),
-            canInteract = function()
-                if not IsHoldingElectricNozzle() and not IsPedInAnyVehicle(PlayerPedId()) then
-                    return true
-                end
-            end
-        },
-        {
-            num = 2,
-            type = "client",
-            event = "cdn-fuel:client:returnnozzle",
-            icon = "fas fa-hand",
-            label = Lang:t("return_nozzle"),
-            canInteract = function()
-                if IsHoldingElectricNozzle() and not refueling then
-                    return true
-                end
-            end
-        },
-    },
-    distance = 2.0
-})
