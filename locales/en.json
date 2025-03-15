@@ -4,19 +4,14 @@
     },
     "target": {
         "insert-nozzle": "Insert Nozzle",
-        "grab-nozzle": "Grab Nozzle",
+        "take-nozzle": "Grab Nozzle",
         "return-nozzle": "Return Nozzle",
         "buy-jerrycan": "Purchase Jerry Can"
     },
     "input": {
         "select_amount": "Select Amount",
-        "bank_money": "Bank Money",
-        "bank_money_default": "%s$",
-        "cash_money": "Cash Money",
-        "cash_money_default": "%s$",
-        "select_payment_method": "Select Payment Method",
-        "bank": "Bank",
-        "cash": "Cash"
+        "money": "Money",
+        "money_default": "%d$"
     },
     "menu": {
         "confirm_title": "The total cost is going to be: %d$ including taxes.",
@@ -27,6 +22,7 @@
         "refueling_vehicle": "Refueling Vehicle..."
     },
     "notify": {
+        "not_enough_money": "You don't have enough money",
         "refuel_success": "You refueled the vehicle successfully"
     }
 }

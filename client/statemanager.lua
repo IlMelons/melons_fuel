@@ -15,7 +15,7 @@ function CheckFuelState(action)
 
     if action == "insert_nozzle" then
         return playerState.holdingNozzle and not playerState.refueling
-    elseif action == "grab_nozzle" or action == "buy_jerrycan" then
+    elseif action == "take_nozzle" or action == "buy_jerrycan" then
         return not playerState.refueling and not playerState.holdingNozzle and not IsPedInAnyVehicle(playerPed)
     elseif action == "return_nozzle" then
         return playerState.holdingNozzle and not playerState.refueling

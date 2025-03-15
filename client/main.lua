@@ -88,30 +88,24 @@ RegisterNetEvent("melons_fuel:client:RefuelVehicle", function(data)
 	local vehicleState = Entity(data.entity).state
 	local currentFuel = vehicleState.fuel or GetVehicleFuelLevel(data.entity)
 
-	local cashMoney, bankMoney = lib.callback.await("melons_fuel:server:GetPlayerMoney", false)
+	local money = lib.callback.await("melons_fuel:server:GetPlayerMoney", false)
 
 	fuel = lib.inputDialog(locale("input.select_amount"), {
-		{type = "input", label = locale("input.bank_money"), default = locale("input.bank_money_default"):format(bankMoney), disabled = true},
-		{type = "input", label = locale("input.cash_money"), default = locale("input.cash_money_default"):format(cashMoney), disabled = true},
-		{type = "select", label = locale("input.select_payment_method"), options = {
-			{value = "bank", label = locale("input.bank")},
-			{value = "cash", label = locale("input.cash")},
-		}, required = true},
+		{type = "input", label = locale("input.money"), default = locale("input.money_default"):format(money), disabled = true},
 		{type = "slider", label = locale("input.select_amount"), default = currentFuel, min = 0, max = 100},
 	})
 	if not fuel then return end
 
-	local paymentMethod = fuel[3]
-	local inputFuel = tonumber(fuel[4])
+	local inputFuel = tonumber(fuel[2])
 	local fuelAmount = inputFuel - currentFuel
-	if not paymentMethod or not fuelAmount then return end
-
-	local vehicleNetID = NetworkGetEntityIsNetworked(data.entity) and VehToNet(data.entity)
-	TriggerServerEvent("melons_fuel:server:ConfirmMenu", vehicleNetID, paymentMethod, fuelAmount)
+	if not fuelAmount then return end
+	TriggerEvent("melons_fuel:client:ConfirmMenu", data.entity, fuelAmount)
 end)
 
-RegisterNetEvent("melons_fuel:client:ConfirmMenu", function(vehicleNetID, paymentMethod, fuelAmount, totalCost)
-	totalCost = math.ceil(totalCost)
+RegisterNetEvent("melons_fuel:client:ConfirmMenu", function(vehicle, fuelAmount)
+	local fuelPrice = GlobalState.fuelPrice
+	local totalCost = math.ceil(fuelAmount * fuelPrice)
+	local vehicleNetID = NetworkGetEntityIsNetworked(vehicle) and VehToNet(vehicle)
 	lib.registerContext({
 		id = "melons_fuel:menu:confirm",
 		title = locale("menu.confirm_title"):format(totalCost),
@@ -120,12 +114,11 @@ RegisterNetEvent("melons_fuel:client:ConfirmMenu", function(vehicleNetID, paymen
 				title = locale("menu.confirm_choice_title"),
 				icon = "circle-check",
 				iconColor = "#4CAF50",
-				event = "melons_fuel:client:PlayRefuelAnim",
+				serverEvent = "melons_fuel:server:ConfirmMenu",
 				args = {
-					vehicleNetID = vehicleNetID,
-					paymentMethod = paymentMethod,
-					fuelAmount = fuelAmount,
-					totalCost = totalCost,
+					netID = vehicleNetID,
+					amount = fuelAmount,
+					cost = totalCost,
 				}
 			},
 			{
@@ -145,8 +138,8 @@ RegisterNetEvent("melons_fuel:client:PlayRefuelAnim", function(data)
 	local playerState = LocalPlayer.state
 	if not playerState.holdingNozzle or not playerState.inGasStation then return end
 
-	local refuelTime = data.fuelAmount * 2000
-	local vehicle = NetToVeh(data.vehicleNetID)
+	local refuelTime = data.amount * 2000
+	local vehicle = NetToVeh(data.netID)
 	local playerPed = cache.ped or PlayerPedId()
 	local bootBoneIndex = GetEntityBoneIndexByName(vehicle, "boot")
 	local bootCoords = GetWorldPositionOfEntityBone(vehicle,  joaat(bootBoneIndex))
@@ -156,7 +149,7 @@ RegisterNetEvent("melons_fuel:client:PlayRefuelAnim", function(data)
 	TaskPlayAnim(playerPed, "timetable@gardener@filling_can", "gar_ig_5_filling_can", 8.0, 1.0, -1, 1, 0, 0, 0, 0)
 	playerState.refueling = true
 	if lib.progressCircle({
-		duration = refuelTime,
+		duration = 1000, --refuelTime,
 		label = locale("progress.refueling_vehicle"),
 		position = "bottom",
 		useWhileDead = false,
@@ -164,7 +157,7 @@ RegisterNetEvent("melons_fuel:client:PlayRefuelAnim", function(data)
 		disable = {move = true, combat = true},
 	}) then
 		playerState.refueling = false
-		TriggerServerEvent("melons_fuel:server:Pay", data.vehicleNetID, data.fuelAmount, data.paymentMethod)
+		TriggerServerEvent("melons_fuel:server:Pay", data.netID, data.amount)
 		StopAnimTask(playerPed, "timetable@gardener@filling_can", "gar_ig_5_filling_can", 3.0, 3.0, -1, 2, 0, 0, 0, 0)
 	else
 		playerState.refueling = false

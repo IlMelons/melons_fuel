@@ -1,7 +1,6 @@
 return {
     GlobalTax = 15.0,
-    MinimumFuelPrice = 2,
-    MaxFuelPrice = 8,
+    FuelPrice = 2,
     FuelUsage = 10.0,
     NozzleType = {
         ["fuel"] = `prop_cs_fuel_nozle`,

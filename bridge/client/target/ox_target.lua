@@ -1,4 +1,5 @@
----@diagnostic disable: lowercase-global
+---@diagnostic disable: duplicate-set-field, lowercase-global
+
 if GetResourceState("ox_target") ~= "started" then return end
 
 local ox_target = exports.ox_target
@@ -11,6 +12,7 @@ function target.AddGlobalVehicle()
             label = locale("target.insert-nozzle"),
             name = "melons_fuel:veh_option",
             icon = "fas fa-gas-pump",
+            distance = 3.0,
             canInteract = function()
                 return CheckFuelState("insert_nozzle")
             end,
@@ -26,11 +28,12 @@ end
 function target.AddModel(model)
     ox_target:addModel(model, {
         {
-            label = locale("target.grab-nozzle"),
+            label = locale("target.take-nozzle"),
             name = "cdn-fuel:modelOptions:option_1",
             icon = "fas fa-gas-pump",
+            distance = 3.0,
             canInteract = function()
-                return CheckFuelState("grab_nozzle")
+                return CheckFuelState("take_nozzle")
             end,
             event = "melons_fuel:client:TakeNozzle",
         },
@@ -38,6 +41,7 @@ function target.AddModel(model)
             label = locale("target.return-nozzle"),
             name = "cdn-fuel:modelOptions:option_2",
             icon = "fas fa-hand",
+            distance = 3.0,
             canInteract = function()
                 return CheckFuelState("return_nozzle")
             end,
@@ -47,10 +51,11 @@ function target.AddModel(model)
             label = locale("target.buy-jerrycan"),
             name = "cdn-fuel:modelOptions:option_3",
             icon = "fas fa-fire-flame-simple",
+            distance = 3.0,
             canInteract = function()
                 return CheckFuelState("buy_jerrycan")
             end,
-            event = "cdn-fuel:client:purchasejerrycan",
+            event = "melons_fuel:client:BuyJerrycan",
         },
     })
 end
