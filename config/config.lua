@@ -16,7 +16,7 @@ return {
         [`prop_gas_pump_1d`] = {type = "fuel", offset = vec3(0.0, 0.0, 2.2)},
         [`prop_gas_pump_old2`] = {type = "fuel", offset = vec3(0.0, 0.0, 0.0)},
         [`prop_gas_pump_old3`] = {type = "fuel", offset = vec3(0.0, 0.0, 0.0)},
-        [`prop_vintage_pump`] = {type = "fuel", offset = vec3(0.0, 0.0, 1.21)}, -- Fatto
+        [`prop_vintage_pump`] = {type = "fuel", offset = vec3(-0.27, 0.05, 1.21)},
     },
     GasStations = {
         ["A01"] = {
