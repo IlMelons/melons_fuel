@@ -13,6 +13,10 @@ AddEventHandler("onResourceStart", function(resourceName)
     if GetCurrentResourceName() ~= resourceName then return end
 
     if GetCurrentResourceName() ~= ExpectedName then
-        print(("^1[WARNING]: The resource name is incorrect. Please set it to %s.^0"):format(ExpectedName))
+        print(("^1[ERROR]: The resource name is incorrect. Please set it to %s.^0"):format(ExpectedName))
+    end
+    local gameBuild = GetConvarInt("sv_enforceGameBuild", 0)
+    if gameBuild < 3258 then 
+        print(("^1[melons_fuel] The script needs Game build 3258 or newer to work. Current Build: %d^0"):format(gameBuild))
     end
 end)
