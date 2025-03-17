@@ -33,10 +33,10 @@ function target.AddModel(model)
         options = {
             {
                 num = 1,
-                label = locale("target.grab-nozzle"),
+                label = locale("target.take-nozzle"),
                 icon = "fas fa-gas-pump",
                 canInteract = function()
-                    return CheckFuelState("grab_nozzle")
+                    return CheckFuelState("take_nozzle")
                 end,
                 action = function(entity)
                     TriggerEvent("melons_fuel:client:TakeNozzle", {entity = entity})
