@@ -1,12 +1,8 @@
-local function InitFuel()
-    InitFuelStates()
-    InitGasStations()
-end
-
 AddEventHandler("onClientResourceStart", function(resourceName)
     local scriptName = cache.resource or GetCurrentResourceName()
     if resourceName ~= scriptName then return end
-    InitFuel()
+    InitFuelStates()
+    InitGasStations()
 end)
 
 AddEventHandler("onResourceStop", function(resourceName)

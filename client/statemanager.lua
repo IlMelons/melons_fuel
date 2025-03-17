@@ -1,24 +1,27 @@
 function InitFuelStates()
     local playerState = LocalPlayer.state
-    playerState:set("holdingNozzle", false, true)
+    playerState:set("holding", "null", true)
     playerState:set("refueling", false, true)
     playerState:set("inGasStation", false, true)
 end
 
 function CheckFuelState(action)
     local playerPed = cache.ped or PlayerPedId()
+
+    if IsPedInAnyVehicle(playerPed, true) then return false end
+
     local playerState = LocalPlayer.state
+    local holding = playerState.holding
+    local refueling = playerState.refueling
 
-    if not playerState.inGasStation then
-        return false
-    end
+    if not playerState.inGasStation then return false end
 
-    if action == "insert_nozzle" then
-        return playerState.holdingNozzle and not playerState.refueling
+    if action == "refuel_nozzle" or action == "return_nozzle" then
+        return holding == "nozzle" and not refueling
     elseif action == "take_nozzle" or action == "buy_jerrycan" then
-        return not playerState.refueling and not playerState.holdingNozzle and not IsPedInAnyVehicle(playerPed)
-    elseif action == "return_nozzle" then
-        return playerState.holdingNozzle and not playerState.refueling
+        return holding == "null" and not refueling
+    elseif action == "refuel_jerrycan" then
+        return holding == "jerrycan" and not refueling
     end
 
     return false

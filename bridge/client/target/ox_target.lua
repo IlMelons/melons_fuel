@@ -9,12 +9,12 @@ target = {}
 function target.AddGlobalVehicle()
     ox_target:addGlobalVehicle({
         {
-            label = locale("target.insert-nozzle"),
+            label = locale("target.refuel-nozzle"),
             name = "melons_fuel:veh_option",
             icon = "fas fa-gas-pump",
             distance = 3.0,
             canInteract = function()
-                return CheckFuelState("insert_nozzle")
+                return CheckFuelState("refuel_nozzle")
             end,
             event = "melons_fuel:client:RefuelVehicle"
         },

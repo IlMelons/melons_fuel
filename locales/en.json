@@ -3,7 +3,7 @@
         "name": "Gas Station"
     },
     "target": {
-        "insert-nozzle": "Insert Nozzle",
+        "refuel-nozzle": "Insert Nozzle",
         "take-nozzle": "Grab Nozzle",
         "return-nozzle": "Return Nozzle",
         "buy-jerrycan": "Purchase Jerry Can"

@@ -10,10 +10,10 @@ function target.AddGlobalVehicle()
     qb_target:AddGlobalVehicle({
         options = {
             {
-                label = locale("target.insert-nozzle"),
+                label = locale("target.refuel-nozzle"),
                 icon = "fas fa-gas-pump",
                 canInteract = function()
-                    return CheckFuelState("insert_nozzle")
+                    return CheckFuelState("refuel_nozzle")
                 end,
                 action = function(entity)
                     TriggerEvent("melons_fuel:client:RefuelVehicle", {entity = entity})

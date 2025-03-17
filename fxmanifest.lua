@@ -5,7 +5,7 @@ lua54 "yes"
 name "melons_fuel"
 description "Fuel System for FiveM"
 author "IlMelons"
-version "0.0.3" -- [BETA TESTING VERSION: DON'T USE IN PRODUCTION]
+version "0.0.4" -- [BETA TESTING VERSION: DON'T USE IN PRODUCTION]
 repository "https://www.github.com/IlMelons/melons_fuel"
 
 ox_lib "locale"
@@ -23,6 +23,7 @@ client_scripts {
 server_scripts {
     "bridge/server/**/*.lua",
     "server/*.lua",
+    "checker.lua",
 }
 
 files {

@@ -24,8 +24,8 @@ end
 
 RegisterNetEvent("melons_fuel:client:TakeNozzle", function(data)
 	local playerState = LocalPlayer.state
-	if not data.entity or playerState.holdingNozzle then return end
 
+	if not data.entity or playerState.holding ~= "null" then return end
 	local playerPed = cache.ped or PlayerPedId()
 	lib.requestAnimDict("anim@am_hold_up@male", 300)
 	TaskPlayAnim(playerPed, "anim@am_hold_up@male", "shoplift_high", 2.0, 8.0, -1, 50, 0, 0, 0, 0)
@@ -37,10 +37,9 @@ RegisterNetEvent("melons_fuel:client:TakeNozzle", function(data)
     local pumpCoords = GetEntityCoords(data.entity)
 	local pumpType = Config.Pumps[pump].type
 	local nozzleModel = Config.NozzleType[pumpType]
-	FuelEntities.nozzle = CreateObject(nozzleModel, 1.0, 1.0, 1.0, true, true, false)
 	local lefthand = GetPedBoneIndex(playerPed, 18905)
+	FuelEntities.nozzle = CreateObject(nozzleModel, 1.0, 1.0, 1.0, true, true, false)
 	AttachEntityToEntity(FuelEntities.nozzle, playerPed, lefthand, 0.13, 0.04, 0.01, -42.0, -115.0, -63.42, 0, 1, 0, 1, 0, 1)
-	local playerCoords = GetEntityCoords(playerPed)
 
     RopeLoadTextures()
     while not RopeAreTexturesLoaded() do
@@ -54,6 +53,7 @@ RegisterNetEvent("melons_fuel:client:TakeNozzle", function(data)
 	ActivatePhysics(FuelEntities.rope)
 	Wait(100)
 
+	local playerCoords = GetEntityCoords(playerPed)
 	local nozzlePos = GetEntityCoords(FuelEntities.nozzle)
 	nozzlePos = GetOffsetFromEntityInWorldCoords(FuelEntities.nozzle, 0.0, -0.033, -0.195)
 	local pumpHeading = GetEntityHeading(data.entity)
@@ -61,9 +61,9 @@ RegisterNetEvent("melons_fuel:client:TakeNozzle", function(data)
 	local newPumpCoords = pumpCoords + rotatedPumpOffset
 	AttachEntitiesToRope(FuelEntities.rope, data.entity, FuelEntities.nozzle, newPumpCoords.x, newPumpCoords.y, newPumpCoords.z, nozzlePos.x, nozzlePos.y, nozzlePos.z, length, false, false, nil, nil)
 
-	playerState.holdingNozzle = true
+	playerState.holding = "nozzle"
 	CreateThread(function()
-		while playerState.holdingNozzle do
+		while playerState.holding == "nozzle" do
 			local currentcoords = GetEntityCoords(playerPed)
 			local dist = #(playerCoords - currentcoords)
 			if not TargetCreated then if Config.FuelTargetExport then exports["ox_target"]:AllowRefuel(true) end end
@@ -71,7 +71,7 @@ RegisterNetEvent("melons_fuel:client:TakeNozzle", function(data)
 			if dist > 7.5 then
 				if TargetCreated then if Config.FuelTargetExport then exports["ox_target"]:AllowRefuel(false) end end
 				TargetCreated = true
-				playerState.holdingNozzle = false
+				playerState.holding = "null"
 				DeleteObject(FuelEntities.nozzle)
 				RopeUnloadTextures()
 				DeleteRope(FuelEntities.rope)
@@ -83,8 +83,8 @@ end)
 
 RegisterNetEvent("melons_fuel:client:ReturnNozzle", function()
 	local playerState = LocalPlayer.state
-	if not playerState.holdingNozzle then return end
-	playerState.holdingNozzle = false
+	if playerState.holding ~= "nozzle" then return end
+	playerState.holding = "null"
 	TargetCreated = false
 	Wait(250)
 	if Config.FuelTargetExport then exports["ox_target"]:AllowRefuel(false) end
@@ -95,7 +95,7 @@ end)
 
 RegisterNetEvent("melons_fuel:client:RefuelVehicle", function(data)
 	local playerState = LocalPlayer.state
-	if not data.entity or not playerState.holdingNozzle then return end
+	if not data.entity or playerState.holding ~= "nozzle" then return end
 
 	local vehicleState = Entity(data.entity).state
 	local currentFuel = vehicleState.fuel or GetVehicleFuelLevel(data.entity)
@@ -148,7 +148,7 @@ end)
 
 RegisterNetEvent("melons_fuel:client:PlayRefuelAnim", function(data)
 	local playerState = LocalPlayer.state
-	if not playerState.holdingNozzle or not playerState.inGasStation then return end
+	if playerState.holding ~= "nozzle" or not playerState.inGasStation then return end
 
 	local refuelTime = data.amount * 2000
 	local vehicle = NetToVeh(data.netID)
@@ -161,7 +161,7 @@ RegisterNetEvent("melons_fuel:client:PlayRefuelAnim", function(data)
 	TaskPlayAnim(playerPed, "timetable@gardener@filling_can", "gar_ig_5_filling_can", 8.0, 1.0, -1, 1, 0, 0, 0, 0)
 	playerState.refueling = true
 	if lib.progressCircle({
-		duration = 1000, --refuelTime,
+		duration = refuelTime,
 		label = locale("progress.refueling_vehicle"),
 		position = "bottom",
 		useWhileDead = false,
