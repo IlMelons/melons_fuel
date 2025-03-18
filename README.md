@@ -3,4 +3,4 @@ Fuel management resource, the resource is a rework of cdn-fuel plus some more mo
 
 ## Dependencies
 - ox_lib
-- melons_mapsutility
+- ox_inventory or qb-inventory
