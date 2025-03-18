@@ -3,4 +3,5 @@ Fuel management resource, the resource is a rework of cdn-fuel plus some more mo
 
 ## Dependencies
 - ox_lib
+- ox_target or qb-target
 - ox_inventory or qb-inventory
