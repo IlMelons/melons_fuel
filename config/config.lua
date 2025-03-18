@@ -22,7 +22,7 @@ return {
         ["A01"] = {
             label = "Globe Oil | Alta Street",
             debug = false,
-            type = "ev",
+            type = "fv",
             cost = 100000,
             coords = vec4(-319.4735, -1471.9589, 33.00, 30.00),
             size = vec3(30.00, 20.00, 7.00),
@@ -42,7 +42,7 @@ return {
         ["A03"] = {
             label = "Globe Oil | Harmony",
             debug = false,
-            type = "ev",
+            type = "fv",
             cost = 100000,
             coords = vec4(1208.5097, 2659.4279, 39.00, 45.00),
             size = vec3(12.00, 17.00, 5.00),
