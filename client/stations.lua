@@ -1,6 +1,7 @@
 local Config = lib.load("config.config")
+local utils = lib.load("client.utils")
 
-Stations = {}
+Stations = {Blips = {}, Zones = {}}
 
 local function InitTargets()
 	target.AddGlobalVehicle()
@@ -10,8 +11,8 @@ local function InitTargets()
 	end
 end
 
-local function CreateFuelZone(stationName, stationData)
-	Stations[stationName] = lib.zones.box({
+local function CreateStationZone(stationName, stationData)
+	Stations.Zones[stationName] = lib.zones.box({
 		coords = vec3(stationData.coords.x, stationData.coords.y, stationData.coords.z),
 		size = stationData.size,
 		rotation = stationData.coords.w,
@@ -27,22 +28,20 @@ local function CreateFuelZone(stationName, stationData)
 	})
 end
 
-local function CreateFuelBlips(points)
-	exports.melons_mapsutility:CreateMultiBlips("melons_fuel", {
-		points = points,
-		sprite = 361,
-		color = 1,
-		label = locale("blips.name"),
-		scale = 0.6,
-	})
+local function CreateStationBlip(coords, id, ev)
+	Stations.Blips[id] = utils.CreateBlip(coords, ev)
 end
 
 function InitGasStations()
-	local points = {}
 	for stationName, stationData in pairs(Config.GasStations) do
-		CreateFuelZone(stationName, stationData)
-		points[#points + 1] = vec3(stationData.coords.x, stationData.coords.y, stationData.coords.z)
+		CreateStationZone(stationName, stationData)
+		CreateStationBlip(stationData.coords, stationName, stationData.type == "ev")
 	end
-	CreateFuelBlips(points)
 	InitTargets()
+end
+
+function RemoveStationBlips()
+	for _, blip in pairs(Stations.Blips) do
+		RemoveBlip(blip)
+	end
 end

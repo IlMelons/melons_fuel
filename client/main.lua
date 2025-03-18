@@ -1,5 +1,6 @@
 ---@diagnostic disable: lowercase-global
 local Config = lib.load("config.config")
+local utils = lib.load("client.utils")
 
 local FuelEntities = {nozzle = nil, rope = nil}
 
@@ -9,17 +10,6 @@ function main.SecureEntityDeletion()
     DeleteObject(FuelEntities.nozzle)
     RopeUnloadTextures()
     DeleteObject(FuelEntities.rope)
-end
-
-local function RotateOffset(offset, heading)
-    local rad = math.rad(heading)
-    local cosH = math.cos(rad)
-    local sinH = math.sin(rad)
-
-    local newX = offset.x * cosH - offset.y * sinH
-    local newY = offset.x * sinH + offset.y * cosH
-
-    return vec3(newX, newY, offset.z)
 end
 
 RegisterNetEvent("melons_fuel:client:TakeNozzle", function(data)
@@ -57,7 +47,7 @@ RegisterNetEvent("melons_fuel:client:TakeNozzle", function(data)
 	local nozzlePos = GetEntityCoords(FuelEntities.nozzle)
 	nozzlePos = GetOffsetFromEntityInWorldCoords(FuelEntities.nozzle, 0.0, -0.033, -0.195)
 	local pumpHeading = GetEntityHeading(data.entity)
-	local rotatedPumpOffset = RotateOffset(Config.Pumps[pump].offset, pumpHeading)
+	local rotatedPumpOffset = utils.RotateOffset(Config.Pumps[pump].offset, pumpHeading)
 	local newPumpCoords = pumpCoords + rotatedPumpOffset
 	AttachEntitiesToRope(FuelEntities.rope, data.entity, FuelEntities.nozzle, newPumpCoords.x, newPumpCoords.y, newPumpCoords.z, nozzlePos.x, nozzlePos.y, nozzlePos.z, length, false, false, nil, nil)
 

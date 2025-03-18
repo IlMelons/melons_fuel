@@ -22,7 +22,7 @@ return {
         ["A01"] = {
             label = "Globe Oil | Alta Street",
             debug = false,
-            type = "car",
+            type = "ev",
             cost = 100000,
             coords = vec4(-319.4735, -1471.9589, 33.00, 30.00),
             size = vec3(30.00, 20.00, 7.00),
@@ -32,7 +32,7 @@ return {
         ["A02"] = {
             label = "Globe Oil | Clinton Ave",
             debug = false,
-            type = "car",
+            type = "fv",
             cost = 100000,
             coords = vec4(620.9170, 268.8990, 105.00, 90.00),
             size = vec3(22.00, 35.00, 7.00),
@@ -42,7 +42,7 @@ return {
         ["A03"] = {
             label = "Globe Oil | Harmony",
             debug = false,
-            type = "car",
+            type = "ev",
             cost = 100000,
             coords = vec4(1208.5097, 2659.4279, 39.00, 45.00),
             size = vec3(12.00, 17.00, 5.00),
@@ -52,7 +52,7 @@ return {
         ["A04"] = {
             label = "Globe Oil | Paleto",
             debug = false,
-            type = "car",
+            type = "fv",
             cost = 100000,
             coords = vec4(1701.7243, 6416.4829, 34.00, 65.00),
             size = vec3(15.00, 20.00, 6.00),
@@ -62,7 +62,7 @@ return {
         ["A05"] = {
             label = "Globe Oil | Rex's Diner",
             debug = false,
-            type = "car",
+            type = "fv",
             cost = 100000,
             coords = vec4(2539.7944, 2594.8078, 39.00, 25.00),
             size = vec3(15.00, 15.00, 5.00),
@@ -72,7 +72,7 @@ return {
         ["A06"] = {
             label = "Globe Oil | Route 68",
             debug = false,
-            type = "car",
+            type = "fv",
             cost = 100000,
             coords = vec4(1038.6393, 2670.8201, 41.00, 270.00),
             size = vec3(19.00, 20.00, 6.00),
@@ -82,7 +82,7 @@ return {
         ["A07"] = {
             label = "Globe Oil | Route 68 Workshop",
             debug = false,
-            type = "car",
+            type = "fv",
             cost = 100000,
             coords = vec4(264.0419, 2606.9702, 46.00, 10.00),
             size = vec3(20.00, 15.00, 5.00),
@@ -92,7 +92,7 @@ return {
         ["A08"] = {
             label = "Globe Oil | Sandy Shores",
             debug = false,
-            type = "car",
+            type = "fv",
             cost = 100000,
             coords = vec4(1785.8026, 3330.2847, 43.00, 215.00),
             size = vec3(12.00, 15.00, 6.00),
@@ -102,7 +102,7 @@ return {
         ["A09"] = {
             label = "LTD | Grapeseed",
             debug = false,
-            type = "car",
+            type = "fv",
             cost = 100000,
             coords = vec4(1687.3678, 4929.5850, 44.00, 325.00),
             size = vec3(19.00, 15.00, 6.00),
@@ -112,7 +112,7 @@ return {
         ["A10"] = {
             label = "LTD | Groove Street",
             debug = false,
-            type = "car",
+            type = "fv",
             cost = 100000,
             coords = vec4(-70.7294, -1761.7605, 32.00, 250.00),
             size = vec3(12.00, 30.00, 8.00),
@@ -122,7 +122,7 @@ return {
         ["A11"] = {
             label = "LTD | Little Seoul",
             debug = false,
-            type = "car",
+            type = "fv",
             cost = 100000,
             coords = vec4(-723.8441, -935.5363, 21.00, 90.00),
             size = vec3(20.00, 30.00, 7.00),
@@ -132,7 +132,7 @@ return {
         ["A12"] = {
             label = "LTD | Mirror Park",
             debug = false,
-            type = "car",
+            type = "fv",
             cost = 100000,
             coords = vec4(1180.7856, -327.5051, 71.00, 10.00),
             size = vec3(20.00, 32.00, 7.00),
@@ -142,7 +142,7 @@ return {
         ["A13"] = {
             label = "LTD | North Rockford",
             debug = false,
-            type = "car",
+            type = "fv",
             cost = 100000,
             coords = vec4(-1799.7219, 803.1752, 140.00, 308.00),
             size = vec3(20.00, 33.00, 8.00),
@@ -152,7 +152,7 @@ return {
         ["A14"] = {
             label = "Ron | Capital Blvd",
             debug = false,
-            type = "car",
+            type = "fv",
             cost = 100000,
             coords = vec4(1208.4717, -1402.3417, 37.00, 225.00),
             size = vec3(15.00, 20.00, 6.00),
@@ -162,7 +162,7 @@ return {
         ["A15"] = {
             label = "Ron | Davis Avenue",
             debug = false,
-            type = "car",
+            type = "fv",
             cost = 100000,
             coords = vec4(175.4103, -1561.7323, 31.50, 132.50),
             size = vec3(20.00, 22.00, 7.00),
@@ -172,7 +172,7 @@ return {
         ["A16"] = {
             label = "Ron | North Rockford",
             debug = false,
-            type = "car",
+            type = "fv",
             cost = 100000,
             coords = vec4(-1436.8403, -276.8882, 48.00, 40.00),
             size = vec3(20.00, 25.00, 7.00),
@@ -182,7 +182,7 @@ return {
         ["A17"] = {
             label = "Ron | Paleto",
             debug = false,
-            type = "car",
+            type = "fv",
             cost = 100000,
             coords = vec4(180.1606, 6603.0186, 34.00, 100.00),
             size = vec3(20.00, 30.00, 7.00),
@@ -192,7 +192,7 @@ return {
         ["A18"] = {
             label = "Ron | Paleto 2",
             debug = false,
-            type = "car",
+            type = "fv",
             cost = 100000,
             coords = vec4(155.2481, 6630.0156, 33.00, 45.00),
             size = vec3(15.00, 20.00, 7.00),
@@ -202,7 +202,7 @@ return {
         ["A19"] = {
             label = "Ron | Palmino Freeway",
             debug = false,
-            type = "car",
+            type = "fv",
             cost = 100000,
             coords = vec4(2580.8799, 361.7864, 111.00, 267.50),
             size = vec3(20.00, 33.00, 8.00),
@@ -212,7 +212,7 @@ return {
         ["A20"] = {
             label = "Ron | Popular Street",
             debug = false,
-            type = "car",
+            type = "fv",
             cost = 100000,
             coords = vec4(819.6821, -1028.6316, 29.00, 270.00),
             size = vec3(20.00, 30.00, 8.00),
@@ -222,7 +222,7 @@ return {
         ["A21"] = {
             label = "Ron | Route 68",
             debug = false,
-            type = "car",
+            type = "fv",
             cost = 100000,
             coords = vec4(-2555.2881, 2334.2251, 35.00, 275.00),
             size = vec3(30.00, 25.00, 7.00),
@@ -232,7 +232,7 @@ return {
         ["A22"] = {
             label = "Xero | Dutch London",
             debug = false,
-            type = "car",
+            type = "fv",
             cost = 100000,
             coords = vec4(-525.3783, -1211.3749, 20.00, 245.00),
             size = vec3(20.00, 22.00, 7.00),
@@ -242,7 +242,7 @@ return {
         ["A23"] = {
             label = "Xero | Great Ocean",
             debug = false,
-            type = "car",
+            type = "fv",
             cost = 100000,
             coords = vec4(-2096.8140, -320.1179, 15.00, 355.00),
             size = vec3(30.00, 25.00, 7.00),
@@ -252,7 +252,7 @@ return {
         ["A24"] = {
             label = "Xero | Paleto Blvd",
             debug = false,
-            type = "car",
+            type = "fv",
             cost = 100000,
             coords = vec4(-93.9469, 6419.9297, 33.00, 135.00),
             size = vec3(13.00, 17.00, 7.00),
@@ -262,7 +262,7 @@ return {
         ["A25"] = {
             label = "Xero | Route 68",
             debug = false,
-            type = "car",
+            type = "fv",
             cost = 100000,
             coords = vec4(49.5958, 2779.0056, 59.00, 52.50),
             size = vec3(15.00, 15.00, 6.00),
@@ -272,7 +272,7 @@ return {
         ["A26"] = {
             label = "Xero | Sandy Shores",
             debug = false,
-            type = "car",
+            type = "fv",
             cost = 100000,
             coords = vec4(2005.2441, 3774.3682, 34.00, 120.00),
             size = vec3(15.00, 20.00, 6.00),
@@ -282,7 +282,7 @@ return {
         ["A27"] = {
             label = "Xero | Senora Freeway",
             debug = false,
-            type = "car",
+            type = "fv",
             cost = 100000,
             coords = vec4(2679.4157, 3264.4072, 57.00, 150.00),
             size = vec3(20.00, 20.00, 6.00),
@@ -292,7 +292,7 @@ return {
         ["A28"] = {
             label = "Xero | Strawberry Ave",
             debug = false,
-            type = "car",
+            type = "fv",
             cost = 100000,
             coords = vec4(265.0627, -1261.2980, 32.00, 0.00),
             size = vec3(33.00, 23.00, 8.00),

@@ -10,5 +10,5 @@ AddEventHandler("onResourceStop", function(resourceName)
 	if resourceName ~= scriptName then return end
 	main.SecureEntityDeletion()
 	target.RemoveGlobalVehicle()
-	exports.melons_mapsutility:DeleteMultiBlips("melons_fuel")
+	RemoveStationBlips()
 end)

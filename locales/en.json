@@ -1,6 +1,7 @@
 {
     "blips": {
-        "name": "Gas Station"
+        "name_fuel": "Gas Station",
+        "name_ev": "EV Station"
     },
     "target": {
         "refuel-nozzle": "Insert Nozzle",
