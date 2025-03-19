@@ -1,3 +1,5 @@
+Config = lib.load("config.config")
+
 lib.callback.register("melons_fuel:server:GetPlayerMoney", function(source)
 	local money = inventory.GetPlayerMoney(source)
 	return money
@@ -38,4 +40,21 @@ RegisterNetEvent("melons_fuel:server:Pay", function(netID, fuelAmount)
 	setFuel(netID, fuelAmount)
 
 	server.Notify(source, locale("notify.refuel_success"):format(totalCost), "success")
+end)
+
+RegisterNetEvent("melons_fuel:server:BuyJerrycan", function()
+    if not source then return end
+
+    if not inventory.CanCarry(source, "WEAPON_PETROLCAN") then
+        return server.Notify(source, locale("notify.not_enough_space"), "error")
+    end
+
+    local jerrycanCost = Config.JerrycanPrice
+    local money = inventory.GetItem(source, "money")
+    if money.count < jerrycanCost then return server.Notify(source, locale("notify.not_enough_money"), "error") end
+
+    if not inventory.Pay(source, jerrycanCost) then return end
+
+    local metadata = {durability = 100, ammo = 100}
+    inventory.AddItem(source, "WEAPON_PETROLCAN", 1, metadata)
 end)

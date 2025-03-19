@@ -24,6 +24,7 @@
     },
     "notify": {
         "not_enough_money": "You don't have enough money",
+        "not_enough_space": "You don't have enough space",
         "refuel_success": "You refueled the vehicle successfully"
     }
 }

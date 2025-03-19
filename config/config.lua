@@ -1,6 +1,7 @@
 return {
     GlobalTax = 15.0,
     FuelPrice = 2,
+    JerrycanPrice = 500,
     FuelUsage = 10.0,
     NozzleType = {
         ["fuel"] = `prop_cs_fuel_nozle`,

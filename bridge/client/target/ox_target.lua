@@ -10,11 +10,20 @@ function target.AddGlobalVehicle()
     ox_target:addGlobalVehicle({
         {
             label = locale("target.refuel-nozzle"),
-            name = "melons_fuel:veh_option",
+            name = "melons_fuel:veh_option_1",
             icon = "fas fa-gas-pump",
             distance = 3.0,
             canInteract = function()
                 return CheckFuelState("refuel_nozzle")
+            end,
+            event = "melons_fuel:client:RefuelVehicle"
+        },
+        {
+            label = locale("target.refuel-jerrycan"),
+            name = "melons_fuel:veh_option_2",
+            icon = "fas fa-gas-pump",
+            canInteract = function()
+                return CheckFuelState("refuel_jerrycan")
             end,
             event = "melons_fuel:client:RefuelVehicle"
         },
@@ -55,7 +64,7 @@ function target.AddModel(model)
             canInteract = function()
                 return CheckFuelState("buy_jerrycan")
             end,
-            event = "melons_fuel:client:BuyJerrycan",
+            serverEvent = "melons_fuel:server:BuyJerrycan",
         },
     })
 end

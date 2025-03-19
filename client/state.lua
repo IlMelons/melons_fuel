@@ -26,3 +26,12 @@ function CheckFuelState(action)
 
     return false
 end
+
+lib.onCache("weapon", function(weapon)
+    local playerState = LocalPlayer.state
+    if weapon ~= `WEAPON_PETROLCAN` and playerState.holding ~= "null" then
+        playerState:set("holding", "null", true)
+    elseif weapon == `WEAPON_PETROLCAN` then
+        playerState:set("holding", "jerrycan", true)
+    end
+end)

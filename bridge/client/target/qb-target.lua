@@ -61,7 +61,7 @@ function target.AddModel(model)
                     return CheckFuelState("buy_jerrycan")
                 end,
                 action = function(entity)
-                    TriggerEvent("melons_fuel:client:BuyJerrycan", {entity = entity})
+                    TriggerServerEvent("melons_fuel:server:BuyJerrycan")
                 end,
             },
         },
