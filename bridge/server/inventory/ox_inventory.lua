@@ -26,6 +26,17 @@ function inventory.CanCarry(source, itemName, amount)
     return success
 end
 
-function inventory.AddItem(source, itemName, count, metadata)
-    ox_inventory:AddItem(source, itemName, count, metadata)
+function inventory.AddItem(source, itemName, count)
+    ox_inventory:AddItem(source, itemName, count)
+end
+
+function inventory.GetJerrycan(source)
+    local weapon = ox_inventory:GetCurrentWeapon(source)
+    local durability = weapon.metadata.durability
+    return weapon, durability
+end
+
+function inventory.UpdateJerrycan(source, item, newDurability)
+    local metadata = {durability = newDurability, ammo = newDurability}
+    ox_inventory:SetMetadata(source, item.slot, metadata)
 end

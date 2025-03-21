@@ -5,7 +5,7 @@ lua54 "yes"
 name "melons_fuel"
 description "Fuel System for FiveM"
 author "IlMelons"
-version "0.0.6" -- [BETA TESTING VERSION: DON'T USE IN PRODUCTION]
+version "0.0.7" -- [BETA TESTING VERSION: DON'T USE IN PRODUCTION]
 repository "https://www.github.com/IlMelons/melons_fuel"
 
 ox_lib "locale"

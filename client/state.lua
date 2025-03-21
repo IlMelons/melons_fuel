@@ -14,14 +14,16 @@ function CheckFuelState(action)
     local holding = playerState.holding
     local refueling = playerState.refueling
 
+    if action == "refuel_jerrycan" then
+        return holding == "jerrycan" and not refueling
+    end
+
     if not playerState.inGasStation then return false end
 
     if action == "refuel_nozzle" or action == "return_nozzle" then
         return holding == "nozzle" and not refueling
     elseif action == "take_nozzle" or action == "buy_jerrycan" then
         return holding == "null" and not refueling
-    elseif action == "refuel_jerrycan" then
-        return holding == "jerrycan" and not refueling
     end
 
     return false

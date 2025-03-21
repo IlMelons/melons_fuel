@@ -136,34 +136,34 @@ RegisterNetEvent("melons_fuel:client:ConfirmMenu", function(vehicle, fuelAmount)
 	lib.showContext("melons_fuel:menu:confirm")
 end)
 
-RegisterNetEvent("melons_fuel:client:PlayRefuelAnim", function(data)
+RegisterNetEvent("melons_fuel:client:PlayRefuelAnim", function(data, isPump)
 	local playerState = LocalPlayer.state
-	if playerState.holding ~= "nozzle" or not playerState.inGasStation then return end
+	if isPump and not playerState.holding == "nozzle" then return end
+	if not isPump and not playerState.holding == "jerrycan" then return end
 
-	local refuelTime = data.amount * 2000
 	local vehicle = NetToVeh(data.netID)
 	local playerPed = cache.ped or PlayerPedId()
-	local bootBoneIndex = GetEntityBoneIndexByName(vehicle, "boot")
-	local bootCoords = GetWorldPositionOfEntityBone(vehicle,  joaat(bootBoneIndex))
-	TaskTurnPedToFaceCoord(playerPed, bootCoords.x, bootCoords.y, bootCoords.z, 500)
-	lib.requestAnimDict("timetable@gardener@filling_can", 500)
+
+	TaskTurnPedToFaceEntity(playerPed, vehicle, 500)
 	Wait(500)
-	TaskPlayAnim(playerPed, "timetable@gardener@filling_can", "gar_ig_5_filling_can", 8.0, 1.0, -1, 1, 0, 0, 0, 0)
+
+	local refuelTime = data.amount * 2000
 	playerState.refueling = true
 	if lib.progressCircle({
 		duration = refuelTime,
 		label = locale("progress.refueling_vehicle"),
 		position = "bottom",
 		useWhileDead = false,
-		canCancel = true,
-		disable = {move = true, combat = true},
+		canCancel = false,
+		anim = {
+			dict = isPump and "timetable@gardener@filling_can" or "weapon@w_sp_jerrycan",
+			clip = isPump and "gar_ig_5_filling_can" or "fire",
+		},
+		disable = {move = true, car = true, combat = true},
 	}) then
 		playerState.refueling = false
-		TriggerServerEvent("melons_fuel:server:Pay", data.netID, data.amount)
-		StopAnimTask(playerPed, "timetable@gardener@filling_can", "gar_ig_5_filling_can", 3.0, 3.0, -1, 2, 0, 0, 0, 0)
-	else
-		playerState.refueling = false
-		StopAnimTask(playerPed, "timetable@gardener@filling_can", "gar_ig_5_filling_can", 3.0, 3.0, -1, 2, 0, 0, 0, 0)
+		if isPump then
+			TriggerServerEvent("melons_fuel:server:Pay", data.netID, data.amount)
+		end
 	end
-	RemoveAnimDict("timetable@gardener@filling_can")
 end)

@@ -17,6 +17,30 @@ local function setFuel(netID, fuelAmount)
 	vehicleState:set("fuel", fuel, true)
 end
 
+RegisterNetEvent("melons_fuel:server:RefuelVehicle", function(data)
+	if not source or not data.entity then return end
+	local playerState = Player(source).state
+	if playerState.holding ~= "jerrycan" then return end
+
+	local vehicle = NetworkGetEntityFromNetworkId(data.entity)
+	if vehicle == 0 or GetEntityType(vehicle) ~= 2 then return end
+
+	local vehicleState = Entity(vehicle)?.state
+	local fuelLevel = math.ceil(vehicleState.fuel)
+	local requiredFuel = 100 - fuelLevel
+	if requiredFuel <= 0 then return server.Notify(source, locale("notify.vehicle_full"), "error") end
+
+	local item, durability = inventory.GetJerrycan(source)
+	if not item or durability <= 0 then return end
+
+	local newDurability = math.floor(durability - requiredFuel)
+	inventory.UpdateJerrycan(source, item, newDurability)
+
+	setFuel(data.entity, requiredFuel)
+	TriggerClientEvent("melons_fuel:client:PlayRefuelAnim", source, {netID = data.entity, amount = requiredFuel}, false)
+end)
+
+
 RegisterNetEvent("melons_fuel:server:ConfirmMenu", function(data)
 	if not source or not data.netID or not data.amount or not data.cost then return end
 	local playerState = Player(source).state
@@ -29,7 +53,7 @@ RegisterNetEvent("melons_fuel:server:ConfirmMenu", function(data)
 	local playerMoney = inventory.GetPlayerMoney(source)
 	if playerMoney < fuelCost then return server.Notify(source, locale("notify.not_enough_money"), "error") end
 
-	TriggerClientEvent("melons_fuel:client:PlayRefuelAnim", source, {netID = data.netID, amount = data.amount, cost = fuelCost})
+	TriggerClientEvent("melons_fuel:client:PlayRefuelAnim", source, {netID = data.netID, amount = data.amount, cost = fuelCost}, true)
 end)
 
 RegisterNetEvent("melons_fuel:server:Pay", function(netID, fuelAmount)
@@ -54,7 +78,5 @@ RegisterNetEvent("melons_fuel:server:BuyJerrycan", function()
     if money.count < jerrycanCost then return server.Notify(source, locale("notify.not_enough_money"), "error") end
 
     if not inventory.Pay(source, jerrycanCost) then return end
-
-    local metadata = {durability = 100, ammo = 100}
-    inventory.AddItem(source, "WEAPON_PETROLCAN", 1, metadata)
+    inventory.AddItem(source, "WEAPON_PETROLCAN", 1)
 end)

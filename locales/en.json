@@ -5,6 +5,7 @@
     },
     "target": {
         "refuel-nozzle": "Insert Nozzle",
+        "refuel-jerrycan": "Refuel (Jerrycan)",
         "take-nozzle": "Grab Nozzle",
         "return-nozzle": "Return Nozzle",
         "buy-jerrycan": "Purchase Jerry Can"
@@ -25,6 +26,7 @@
     "notify": {
         "not_enough_money": "You don't have enough money",
         "not_enough_space": "You don't have enough space",
+        "vehicle_full": "The vehicle is already full",
         "refuel_success": "You refueled the vehicle successfully"
     }
 }

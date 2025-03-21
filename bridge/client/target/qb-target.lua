@@ -19,6 +19,17 @@ function target.AddGlobalVehicle()
                     TriggerEvent("melons_fuel:client:RefuelVehicle", {entity = entity})
                 end,
             },
+            {
+                label = locale("target.refuel-jerrycan"),
+                icon = "fas fa-gas-pump",
+                canInteract = function()
+                    return CheckFuelState("refuel_jerrycan")
+                end,
+                action = function(entity)
+                    local vehNetID = NetworkGetNetworkIdFromEntity(entity)
+                    TriggerServerEvent("melons_fuel:server:RefuelVehicle", {entity = vehNetID})
+                end,
+            },
         },
         distance = 3.0,
     })

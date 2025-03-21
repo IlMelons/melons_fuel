@@ -29,3 +29,12 @@ end
 function inventory.AddItem(source, itemName, amount, metadata)
     qb_inventory:AddItem(source, itemName, amount, false, metadata)
 end
+
+function inventory.GetJerrycan(source)
+    local item = qb_inventory:GetItemByName(source, "WEAPON_PETROLCAN")
+    return item, item.info.quality
+end
+
+function inventory.UpdateJerrycan(source, item, newDurability)
+    qb_inventory:SetItemData(source, item.name, "quality", newDurability)
+end

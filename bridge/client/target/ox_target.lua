@@ -25,7 +25,7 @@ function target.AddGlobalVehicle()
             canInteract = function()
                 return CheckFuelState("refuel_jerrycan")
             end,
-            event = "melons_fuel:client:RefuelVehicle"
+            serverEvent = "melons_fuel:server:RefuelVehicle"
         },
     })
 end
