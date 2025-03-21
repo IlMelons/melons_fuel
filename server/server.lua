@@ -68,15 +68,23 @@ end)
 
 RegisterNetEvent("melons_fuel:server:BuyJerrycan", function()
     if not source then return end
+	local playerState = Player(source).state
+	local jerrycanCost = Config.JerrycanPrice
+	if playerState.holding == "jerrycan" then
+		local item, durability = inventory.GetJerrycan(source)
+		if not item or item.name ~= "WEAPON_PETROLCAN" then return end
 
-    if not inventory.CanCarry(source, "WEAPON_PETROLCAN") then
-        return server.Notify(source, locale("notify.not_enough_space"), "error")
-    end
+		if durability > 0 then return server.Notify(source, locale("notify.jerrycan_not_empty"), "error") end
 
-    local jerrycanCost = Config.JerrycanPrice
-    local money = inventory.GetItem(source, "money")
-    if money.count < jerrycanCost then return server.Notify(source, locale("notify.not_enough_money"), "error") end
-
-    if not inventory.Pay(source, jerrycanCost) then return end
-    inventory.AddItem(source, "WEAPON_PETROLCAN", 1)
+		if not inventory.Pay(source, jerrycanCost) then return end
+		inventory.UpdateJerrycan(source, item, 100)
+	else
+		if not inventory.CanCarry(source, "WEAPON_PETROLCAN") then
+			return server.Notify(source, locale("notify.not_enough_space"), "error")
+		end
+		local money = inventory.GetItem(source, "money")
+		if money.count < jerrycanCost then return server.Notify(source, locale("notify.not_enough_money"), "error") end
+		if not inventory.Pay(source, jerrycanCost) then return end
+		inventory.AddItem(source, "WEAPON_PETROLCAN", 1)
+	end
 end)
