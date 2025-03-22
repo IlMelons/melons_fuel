@@ -39,29 +39,31 @@ function target.RemoveGlobalVehicle()
     qb_target:RemoveGlobalVehicle(locale("target.insert-nozzle"))
 end
 
-function target.AddModel(model)
+function target.AddModel(model, isEV)
     qb_target:AddTargetModel(model, {
         options = {
             {
                 num = 1,
-                label = locale("target.take-nozzle"),
-                icon = "fas fa-gas-pump",
+                label = locale(isEV and "target.take-charger" or "target.take-nozzle"),
+                icon = isEV and "fas fa-bolt" or "fas fa-gas-pump",
                 canInteract = function()
                     return CheckFuelState("take_nozzle")
                 end,
                 action = function(entity)
-                    TriggerEvent("melons_fuel:client:TakeNozzle", {entity = entity})
+                    local pumpType = isEV and "ev" or "fuel"
+                    TriggerEvent("melons_fuel:client:TakeNozzle", {entity = entity}, pumpType)
                 end,
             },
             {
                 num = 2,
-                label = locale("target.return-nozzle"),
+                label = locale(isEV and "target.return-charger" or "target.return-nozzle"),
                 icon = "fas fa-hand",
                 canInteract = function()
                     return CheckFuelState("return_nozzle")
                 end,
                 action = function(entity)
-                    TriggerEvent("melons_fuel:client:ReturnNozzle", {entity = entity})
+                    local pumpType = isEV and "ev" or "fuel"
+                    TriggerEvent("melons_fuel:client:ReturnNozzle", {entity = entity}, pumpType)
                 end,
             },
             {

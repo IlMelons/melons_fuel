@@ -6,8 +6,8 @@ Stations = {Blips = {}, Zones = {}}
 local function InitTargets()
 	target.AddGlobalVehicle()
 
-	for pumpmodel in pairs(Config.Pumps) do
-		target.AddModel(pumpmodel)
+	for pumpModel, pumpData in pairs(Config.Pumps) do
+		target.AddModel(pumpModel, pumpData.type == "electric")
 	end
 end
 

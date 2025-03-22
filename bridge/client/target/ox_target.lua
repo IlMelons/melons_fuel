@@ -34,31 +34,37 @@ function target.RemoveGlobalVehicle()
     ox_target:removeGlobalVehicle("melons_fuel:veh_option")
 end
 
-function target.AddModel(model)
+function target.AddModel(model, isEV)
     ox_target:addModel(model, {
         {
-            label = locale("target.take-nozzle"),
-            name = "cdn-fuel:modelOptions:option_1",
-            icon = "fas fa-gas-pump",
+            label = locale(isEV and "target.take-charger" or "target.take-nozzle"),
+            name = "melons_fuel:pump_option_1",
+            icon = isEV and "fas fa-bolt" or "fas fa-gas-pump",
             distance = 3.0,
             canInteract = function()
                 return CheckFuelState("take_nozzle")
             end,
-            event = "melons_fuel:client:TakeNozzle",
+            onSelect = function(data)
+                local pumpType = isEV and "ev" or "fuel"
+                TriggerEvent("melons_fuel:client:TakeNozzle", data, pumpType)
+            end,
         },
         {
-            label = locale("target.return-nozzle"),
-            name = "cdn-fuel:modelOptions:option_2",
+            label = locale(isEV and "target.return-charger" or "target.return-nozzle"),
+            name = "melons_fuel:pump_option_2",
             icon = "fas fa-hand",
             distance = 3.0,
             canInteract = function()
                 return CheckFuelState("return_nozzle")
             end,
-            event = "melons_fuel:client:ReturnNozzle",
+            onSelect = function(data)
+                local pumpType = isEV and "ev" or "fuel"
+                TriggerEvent("melons_fuel:client:ReturnNozzle", data, pumpType)
+            end,
         },
         {
             label = locale("target.buy-jerrycan"),
-            name = "cdn-fuel:modelOptions:option_3",
+            name = "melons_fuel:pump_option_3",
             icon = "fas fa-fire-flame-simple",
             distance = 3.0,
             canInteract = function()

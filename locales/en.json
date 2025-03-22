@@ -7,7 +7,9 @@
         "refuel-nozzle": "Insert Nozzle",
         "refuel-jerrycan": "Refuel (Jerrycan)",
         "take-nozzle": "Grab Nozzle",
+        "take-charger": "Grab Charger",
         "return-nozzle": "Return Nozzle",
+        "return-charger": "Return Charger",
         "buy-jerrycan": "Buy/Refill Jerry Can"
     },
     "input": {
