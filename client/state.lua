@@ -21,11 +21,11 @@ function CheckFuelState(action)
     if not playerState.inGasStation then return false end
 
     if action == "refuel_nozzle" or action == "return_nozzle" then
-        return holding == "nozzle" and not refueling
+        return (holding == "fv_nozzle" or holding == "ev_nozzle") and not refueling
     elseif action == "take_nozzle_fv" or action == "take_nozzle_ev" then
         return holding == "null" and not refueling
     elseif action == "buy_jerrycan" then
-        return holding ~= "nozzle" and not refueling
+        return (holding ~= "fv_nozzle" and holding ~= "ev_nozzle") and not refueling
     end
 
     return false

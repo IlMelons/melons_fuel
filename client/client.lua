@@ -14,7 +14,7 @@ end
 
 RegisterNetEvent("melons_fuel:client:TakeNozzle", function(data, pumpType)
 	local playerState = LocalPlayer.state
-	if not data.entity or playerState.holding ~= "null" then return end
+	if not data.entity or not playerState.holding == "null" then return end
 
 	local playerPed = cache.ped or PlayerPedId()
 	lib.requestAnimDict("anim@am_hold_up@male", 300)
