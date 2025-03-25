@@ -12,10 +12,10 @@ function main.SecureEntityDeletion()
     DeleteObject(FuelEntities.rope)
 end
 
-RegisterNetEvent("melons_fuel:client:TakeNozzle", function(data)
+RegisterNetEvent("melons_fuel:client:TakeNozzle", function(data, pumpType)
 	local playerState = LocalPlayer.state
-
 	if not data.entity or playerState.holding ~= "null" then return end
+
 	local playerPed = cache.ped or PlayerPedId()
 	lib.requestAnimDict("anim@am_hold_up@male", 300)
 	TaskPlayAnim(playerPed, "anim@am_hold_up@male", "shoplift_high", 2.0, 8.0, -1, 50, 0, 0, 0, 0)
@@ -25,7 +25,6 @@ RegisterNetEvent("melons_fuel:client:TakeNozzle", function(data)
 
 	local pump = GetEntityModel(data.entity)
     local pumpCoords = GetEntityCoords(data.entity)
-	local pumpType = Config.Pumps[pump].type
 	local nozzleModel = Config.NozzleType[pumpType]
 	local lefthand = GetPedBoneIndex(playerPed, 18905)
 	FuelEntities.nozzle = CreateObject(nozzleModel, 1.0, 1.0, 1.0, true, true, false)
@@ -36,7 +35,7 @@ RegisterNetEvent("melons_fuel:client:TakeNozzle", function(data)
         Wait(0)
         RopeLoadTextures()
     end
-	FuelEntities.rope = AddRope(pumpCoords.x, pumpCoords.y, pumpCoords.z, 0.0, 0.0, 0.0, 3.0, Config.RopeType['fuel'], 8.0 --[[ DON'T SET TO 0.0!!! GAME CRASH!]], 0.0, 1.0, false, false, false, 1.0, true)
+	FuelEntities.rope = AddRope(pumpCoords.x, pumpCoords.y, pumpCoords.z, 0.0, 0.0, 0.0, 3.0, Config.RopeType["fv"], 8.0 --[[ DON'T SET TO 0.0!!! GAME CRASH!]], 0.0, 1.0, false, false, false, 1.0, true)
 	while not FuelEntities.rope do
 		Wait(0)
 	end

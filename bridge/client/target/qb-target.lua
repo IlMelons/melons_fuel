@@ -50,7 +50,7 @@ function target.AddModel(model, isEV)
                     return CheckFuelState("take_nozzle")
                 end,
                 action = function(entity)
-                    local pumpType = isEV and "ev" or "fuel"
+                    local pumpType = isEV and "ev" or "fv"
                     TriggerEvent("melons_fuel:client:TakeNozzle", {entity = entity}, pumpType)
                 end,
             },
@@ -62,7 +62,7 @@ function target.AddModel(model, isEV)
                     return CheckFuelState("return_nozzle")
                 end,
                 action = function(entity)
-                    local pumpType = isEV and "ev" or "fuel"
+                    local pumpType = isEV and "ev" or "fv"
                     TriggerEvent("melons_fuel:client:ReturnNozzle", {entity = entity}, pumpType)
                 end,
             },

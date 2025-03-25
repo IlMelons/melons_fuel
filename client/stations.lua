@@ -7,7 +7,7 @@ local function InitTargets()
 	target.AddGlobalVehicle()
 
 	for pumpModel, pumpData in pairs(Config.Pumps) do
-		target.AddModel(pumpModel, pumpData.type == "electric")
+		target.AddModel(pumpModel, pumpData.type == "ev")
 	end
 end
 

@@ -4,20 +4,20 @@ return {
     JerrycanPrice = 500,
     FuelUsage = 10.0,
     NozzleType = {
-        ["fuel"] = `prop_cs_fuel_nozle`,
+        ["fv"] = `prop_cs_fuel_nozle`,
     },
     RopeType = { -- Options: 1-2-3-4-5; 1: Khaki Color, Kind of Thick, 2: Very Thick Khaki Rope, 3: Very Thick Black Rope, 4: Very Thin Black Rope, 5: Same as 3
-        ["fuel"] = 1,
-        ["electric"] = 1,
+        ["fv"] = 1,
+        ["ev"] = 1,
     },
     Pumps = {
-        [`prop_gas_pump_1a`] = {type = "fuel", offset = vec3(0.0, 0.0, 2.2)},
-        [`prop_gas_pump_1b`] = {type = "fuel", offset = vec3(0.0, 0.0, 2.2)},
-        [`prop_gas_pump_1c`] = {type = "fuel", offset = vec3(0.0, 0.0, 2.2)},
-        [`prop_gas_pump_1d`] = {type = "fuel", offset = vec3(0.0, 0.0, 2.2)},
-        [`prop_gas_pump_old2`] = {type = "fuel", offset = vec3(0.0, 0.0, 0.0)},
-        [`prop_gas_pump_old3`] = {type = "fuel", offset = vec3(0.0, 0.0, 0.0)},
-        [`prop_vintage_pump`] = {type = "fuel", offset = vec3(-0.27, 0.05, 1.21)},
+        [`prop_gas_pump_1a`] = {type = "fv", offset = vec3(0.0, 0.0, 2.2)},
+        [`prop_gas_pump_1b`] = {type = "fv", offset = vec3(0.0, 0.0, 2.2)},
+        [`prop_gas_pump_1c`] = {type = "fv", offset = vec3(0.0, 0.0, 2.2)},
+        [`prop_gas_pump_1d`] = {type = "fv", offset = vec3(0.0, 0.0, 2.2)},
+        [`prop_gas_pump_old2`] = {type = "fv", offset = vec3(0.0, 0.0, 0.0)},
+        [`prop_gas_pump_old3`] = {type = "fv", offset = vec3(0.0, 0.0, 0.0)},
+        [`prop_vintage_pump`] = {type = "fv", offset = vec3(-0.27, 0.05, 1.21)},
     },
     GasStations = {
         ["A01"] = {
