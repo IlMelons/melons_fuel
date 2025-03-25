@@ -13,8 +13,7 @@ function main.SecureEntityDeletion()
 end
 
 RegisterNetEvent("melons_fuel:client:TakeNozzle", function(data, pumpType)
-	local playerState = LocalPlayer.state
-	if not data.entity or not playerState.holding == "null" then return end
+	if not data.entity or not CheckFuelState("take_nozzle") then return end
 
 	local playerPed = cache.ped or PlayerPedId()
 	lib.requestAnimDict("anim@am_hold_up@male", 300)
@@ -50,9 +49,11 @@ RegisterNetEvent("melons_fuel:client:TakeNozzle", function(data, pumpType)
 	local newPumpCoords = pumpCoords + rotatedPumpOffset
 	AttachEntitiesToRope(FuelEntities.rope, data.entity, FuelEntities.nozzle, newPumpCoords.x, newPumpCoords.y, newPumpCoords.z, nozzlePos.x, nozzlePos.y, nozzlePos.z, length, false, false, nil, nil)
 
-	playerState.holding = "nozzle"
+	SetFuelState("holding", ("%s_nozzle"):format(pumpType))
 	CreateThread(function()
-		while playerState.holding == "nozzle" do
+		local playerState = LocalPlayer.state
+		local nozzleName = ("%s_nozzle"):format(pumpType)
+		while playerState.holding == nozzleName do
 			local currentcoords = GetEntityCoords(playerPed)
 			local dist = #(playerCoords - currentcoords)
 			if not TargetCreated then if Config.FuelTargetExport then exports["ox_target"]:AllowRefuel(true) end end
@@ -60,7 +61,7 @@ RegisterNetEvent("melons_fuel:client:TakeNozzle", function(data, pumpType)
 			if dist > 7.5 then
 				if TargetCreated then if Config.FuelTargetExport then exports["ox_target"]:AllowRefuel(false) end end
 				TargetCreated = true
-				playerState.holding = "null"
+				SetFuelState("holding", "null")
 				DeleteObject(FuelEntities.nozzle)
 				RopeUnloadTextures()
 				DeleteRope(FuelEntities.rope)
@@ -71,9 +72,8 @@ RegisterNetEvent("melons_fuel:client:TakeNozzle", function(data, pumpType)
 end)
 
 RegisterNetEvent("melons_fuel:client:ReturnNozzle", function()
-	local playerState = LocalPlayer.state
-	if playerState.holding ~= "nozzle" then return end
-	playerState.holding = "null"
+	if not CheckFuelState("return_nozzle") then return end
+	SetFuelState("holding", "null")
 	TargetCreated = false
 	Wait(250)
 	if Config.FuelTargetExport then exports["ox_target"]:AllowRefuel(false) end
@@ -83,8 +83,7 @@ RegisterNetEvent("melons_fuel:client:ReturnNozzle", function()
 end)
 
 RegisterNetEvent("melons_fuel:client:RefuelVehicle", function(data)
-	local playerState = LocalPlayer.state
-	if not data.entity or playerState.holding ~= "nozzle" then return end
+	if not data.entity or not CheckFuelState("refuel_nozzle") then return end
 
 	local vehicleState = Entity(data.entity).state
 	local currentFuel = vehicleState.fuel or GetVehicleFuelLevel(data.entity)
@@ -137,7 +136,7 @@ end)
 
 RegisterNetEvent("melons_fuel:client:PlayRefuelAnim", function(data, isPump)
 	local playerState = LocalPlayer.state
-	if isPump and not playerState.holding == "nozzle" then return end
+	if isPump and not (playerState.holding == "fv_nozzle" or playerState.holding == "ev_nozzle") then return end
 	if not isPump and not playerState.holding == "jerrycan" then return end
 
 	local vehicle = NetToVeh(data.netID)
@@ -147,7 +146,7 @@ RegisterNetEvent("melons_fuel:client:PlayRefuelAnim", function(data, isPump)
 	Wait(500)
 
 	local refuelTime = data.amount * 2000
-	playerState.refueling = true
+	SetFuelState("refueling", true)
 	if lib.progressCircle({
 		duration = refuelTime,
 		label = locale("progress.refueling_vehicle"),
@@ -160,7 +159,7 @@ RegisterNetEvent("melons_fuel:client:PlayRefuelAnim", function(data, isPump)
 		},
 		disable = {move = true, car = true, combat = true},
 	}) then
-		playerState.refueling = false
+		SetFuelState("refueling", false)
 		if isPump then
 			TriggerServerEvent("melons_fuel:server:Pay", data.netID, data.amount)
 		end

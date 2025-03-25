@@ -17,12 +17,10 @@ local function CreateStationZone(stationName, stationData)
 		size = stationData.size,
 		rotation = stationData.coords.w,
 		onEnter = function(self)
-			local playerState = LocalPlayer.state
-			playerState:set("inGasStation", true, true)
+			SetFuelState("inGasStation", true)
 		end,
 		onExit = function(self)
-			local playerState = LocalPlayer.state
-			playerState:set("inGasStation", false, true)
+			SetFuelState("inGasStation", false)
 		end,
 		debug = stationData.debug,
 	})
