@@ -22,7 +22,7 @@ function CheckFuelState(action)
 
     if action == "refuel_nozzle" or action == "return_nozzle" then
         return holding == "nozzle" and not refueling
-    elseif action == "take_nozzle" then
+    elseif action == "take_nozzle_ev" or action == "take_nozzle_ev" then
         return holding == "null" and not refueling
     elseif action == "buy_jerrycan" then
         return holding ~= "nozzle" and not refueling

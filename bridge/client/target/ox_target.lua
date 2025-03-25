@@ -42,7 +42,7 @@ function target.AddModel(model, isEV)
             icon = isEV and "fas fa-bolt" or "fas fa-gas-pump",
             distance = 3.0,
             canInteract = function()
-                return CheckFuelState("take_nozzle")
+                return CheckFuelState(("take_nozzle_%s"):format(isEV and "ev" or "fv"))
             end,
             onSelect = function(data)
                 local pumpType = isEV and "ev" or "fv"

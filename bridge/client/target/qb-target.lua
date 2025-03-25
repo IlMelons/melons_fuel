@@ -47,7 +47,7 @@ function target.AddModel(model, isEV)
                 label = locale(isEV and "target.take-charger" or "target.take-nozzle"),
                 icon = isEV and "fas fa-bolt" or "fas fa-gas-pump",
                 canInteract = function()
-                    return CheckFuelState("take_nozzle")
+                    return CheckFuelState(("take_nozzle_%s"):format(isEV and "ev" or "fv"))
                 end,
                 action = function(entity)
                     local pumpType = isEV and "ev" or "fv"
