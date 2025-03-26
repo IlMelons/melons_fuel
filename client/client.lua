@@ -85,6 +85,12 @@ end)
 RegisterNetEvent("melons_fuel:client:RefuelVehicle", function(data)
 	if not data.entity or not CheckFuelState("refuel_nozzle") then return end
 
+	---@description Electric Vehicle Check (Thanks to James [jgscripts] for a comment in a FiveM post)
+	local playerState = LocalPlayer.state
+	local isElectric = GetIsVehicleElectric(GetEntityModel(data.entity))
+	if playerState.holding == "ev_nozzle" and not isElectric then return client.Notify("notify.not-ev") end
+	if playerState.holding == "fv_nozzle" and isElectric then return client.Notify("notify.not-fv") end
+
 	local vehicleState = Entity(data.entity).state
 	local currentFuel = vehicleState.fuel or GetVehicleFuelLevel(data.entity)
 

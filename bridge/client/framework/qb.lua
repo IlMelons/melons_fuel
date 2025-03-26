@@ -4,8 +4,8 @@ if GetResourceState("qb-core") ~= "started" then return end
 
 local QBCore = exports["qb-core"]:GetCoreObject()
 
-server = {}
+client = {}
 
-function server.Notify(source, msg, type)
-    TriggerClientEvent("QBCore:Notify", source, msg, type)
+function client.Notify(msg, type)
+    QBCore.Functions.Notify(msg, type)
 end

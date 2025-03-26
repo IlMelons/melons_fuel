@@ -26,6 +26,8 @@
         "refueling_vehicle": "Refueling Vehicle..."
     },
     "notify": {
+        "not-ev": "The vehicle isn't electric",
+        "not-fv": "The vehicle doesn't use fuel",
         "not_enough_money": "You don't have enough money",
         "not_enough_space": "You don't have enough space",
         "jerrycan_not_empty": "The jerrycan isn't empty",
