@@ -82,6 +82,70 @@ RegisterNetEvent("melons_fuel:client:ReturnNozzle", function()
 	DeleteRope(FuelEntities.rope)
 end)
 
+local function SecondaryMenu(data)
+	local totalCost = math.ceil(data.fuelAmount * GlobalState.fuelPrice)
+	local vehNetID = NetworkGetEntityIsNetworked(data.Veh) and VehToNet(data.Veh)
+	local cashMoney, bankMoney = lib.callback.await("melons_fuel:server:GetPlayerMoney", false)
+
+	lib.registerContext({
+		id = "melons_fuel:menu:payment",
+		title = locale("menu.payment-title"):format(totalCost),
+		options = {
+			{
+				title = locale("menu.payment-bank"),
+				description = locale("menu.payment-bank-desc"):format(bankMoney),
+				icon = "building-columns",
+				onSelect = function()
+					TriggerServerEvent("melons_fuel:server:ElaborateAction", {
+						NetID = vehNetID,
+						PM = "bank",
+						PT = data.PT,
+						Amount = data.fuelAmount,
+						Cost = totalCost,
+					})
+				end,
+			},
+			{
+				title = locale("menu.payment-cash"),
+				description = locale("menu.payment-cash-desc"):format(cashMoney),
+				icon = "money-bill",
+				onSelect = function()
+					TriggerServerEvent("melons_fuel:server:ElaborateAction", {
+						NetID = vehNetID,
+						PM = "cash",
+						PT = data.PT,
+						Amount = data.fuelAmount,
+						Cost = totalCost,
+					})
+				end,
+			},
+		},
+	})
+
+	lib.registerContext({
+		id = "melons_fuel:menu:confirm",
+		title = locale("menu.confirm-title"):format(totalCost),
+		options = {
+			{
+				title = locale("menu.confirm-choice-title"),
+				menu = "melons_fuel:menu:payment",
+				icon = "circle-check",
+				iconColor = "#4CAF50",
+			},
+			{
+				title = locale("menu.cancel-choice-title"),
+				icon = "circle-xmark",
+				iconColor = "#FF0000",
+				onSelect = function()
+					lib.hideContext()
+				end,
+			},
+		},
+	})
+
+	lib.showContext("melons_fuel:menu:confirm")
+end
+
 RegisterNetEvent("melons_fuel:client:RefuelVehicle", function(data)
 	if not data.entity or not CheckFuelState("refuel_nozzle") then return end
 
@@ -94,57 +158,16 @@ RegisterNetEvent("melons_fuel:client:RefuelVehicle", function(data)
 	local vehicleState = Entity(data.entity).state
 	local currentFuel = vehicleState.fuel or GetVehicleFuelLevel(data.entity)
 
-	local cashMoney, bankMoney = lib.callback.await("melons_fuel:server:GetPlayerMoney", false)
-
-	input = lib.inputDialog(locale("input.select-amount"), {
-		{type = "input", label = locale("input.bank-money"), default = locale("input.bank-money-default"):format(bankMoney), disabled = true},
-		{type = "input", label = locale("input.cash-money"), default = locale("input.cash-money-default"):format(cashMoney), disabled = true},
-		{type = "select", label = locale("input.select-payment-method"), options = {
-			{value = "bank", label = locale("input.bank")},
-			{value = "cash", label = locale("input.cash")},
-		}, required = true},
+	local input = lib.inputDialog(locale("input.select-amount"), {
 		{type = "slider", label = locale("input.select-amount"), default = currentFuel, min = 0, max = 100},
 	})
 	if not input then return end
 
-	local inputPM = input[3]
-	local inputFuel = tonumber(input[4])
+	local inputFuel = tonumber(input[1])
 	local fuelAmount = inputFuel - currentFuel
-	if not inputPM or not fuelAmount then return end
-	TriggerEvent("melons_fuel:client:ConfirmMenu", data.entity, inputPM, fuelAmount)
-end)
+	if not fuelAmount then return end
 
-RegisterNetEvent("melons_fuel:client:ConfirmMenu", function(vehicle, paymentMethod, fuelAmount)
-	local fuelPrice = GlobalState.fuelPrice
-	local totalCost = math.ceil(fuelAmount * fuelPrice)
-	local vehicleNetID = NetworkGetEntityIsNetworked(vehicle) and VehToNet(vehicle)
-	lib.registerContext({
-		id = "melons_fuel:menu:confirm",
-		title = locale("menu.confirm_title"):format(totalCost),
-		options = {
-			{
-				title = locale("menu.confirm_choice_title"),
-				icon = "circle-check",
-				iconColor = "#4CAF50",
-				serverEvent = "melons_fuel:server:ConfirmMenu",
-				args = {
-					netID = vehicleNetID,
-					PM = paymentMethod,
-					amount = fuelAmount,
-					cost = totalCost,
-				}
-			},
-			{
-				title = locale("menu.cancel_choice_title"),
-				icon = "circle-xmark",
-				iconColor = "#FF0000",
-				onSelect = function()
-					lib.hideContext()
-				end,
-			},
-		},
-	})
-	lib.showContext("melons_fuel:menu:confirm")
+	SecondaryMenu({Veh = data.entity, PT = "fuel", fuelAmount = fuelAmount})
 end)
 
 RegisterNetEvent("melons_fuel:client:PlayRefuelAnim", function(data, isPump)
@@ -152,17 +175,17 @@ RegisterNetEvent("melons_fuel:client:PlayRefuelAnim", function(data, isPump)
 	if isPump and not (playerState.holding == "fv_nozzle" or playerState.holding == "ev_nozzle") then return end
 	if not isPump and not playerState.holding == "jerrycan" then return end
 
-	local vehicle = NetToVeh(data.netID)
+	local vehicle = NetToVeh(data.NetID)
 	local playerPed = cache.ped or PlayerPedId()
 
 	TaskTurnPedToFaceEntity(playerPed, vehicle, 500)
 	Wait(500)
 
-	local refuelTime = data.amount * 2000
+	local refuelTime = data.Amount * 2000
 	SetFuelState("refueling", true)
 	if lib.progressCircle({
 		duration = refuelTime,
-		label = locale("progress.refueling_vehicle"),
+		label = locale("progress.refueling-vehicle"),
 		position = "bottom",
 		useWhileDead = false,
 		canCancel = false,
@@ -173,8 +196,6 @@ RegisterNetEvent("melons_fuel:client:PlayRefuelAnim", function(data, isPump)
 		disable = {move = true, car = true, combat = true},
 	}) then
 		SetFuelState("refueling", false)
-		if isPump then
-			TriggerServerEvent("melons_fuel:server:Pay", data.netID, data.amount)
-		end
+		client.Notify(locale("notify.refuel-success"), "success")
 	end
 end)

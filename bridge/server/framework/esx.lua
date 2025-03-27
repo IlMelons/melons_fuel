@@ -10,12 +10,18 @@ function server.Notify(source, msg, type)
     TriggerClientEvent("esx:showNotification", source, msg, type)
 end
 
-function server.GetPlayerMoney(source)
+function server.GetPlayerMoney(source, account)
     local xPlayer = ESX.GetPlayerFromId(source)
     local cashMoney = xPlayer.accounts.cash
     local bankMoney = xPlayer.accounts.bank
-    
-    return cashMoney, bankMoney
+
+    if account == "bank" then
+        return bankMoney
+    elseif account == "cash" then
+        return cashMoney
+    else
+        return cashMoney, bankMoney
+    end
 end
 
 function server.PayMoney(source, paymentMethod, amount)

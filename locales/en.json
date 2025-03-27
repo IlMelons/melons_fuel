@@ -1,7 +1,7 @@
 {
     "blips": {
-        "name_fuel": "Gas Station",
-        "name_ev": "EV Station"
+        "name-fuel": "Gas Station",
+        "name-ev": "EV Station"
     },
     "target": {
         "refuel-nozzle": "Insert Nozzle",
@@ -13,25 +13,29 @@
         "buy-jerrycan": "Buy/Refill Jerry Can"
     },
     "input": {
-        "select_amount": "Select Amount",
-        "money": "Money",
-        "money_default": "%d$"
+        "select-amount": "Select Amount"
     },
     "menu": {
-        "confirm_title": "The total cost is going to be: %d$ including taxes.",
-        "confirm_choice_title": "Confirm",
-        "cancel_choice_title": "Cancel"
+        "confirm-title": "The total cost is: %d$ including taxes.",
+        "confirm-choice-title": "Confirm",
+        "cancel-choice-title": "Cancel",
+        "payment-title": "Choose Payment Method (%d$)",
+        "payment-bank": "Bank",
+        "payment-bank-desc": "You have %s$ in your bank account.",
+        "payment-cash": "Cash",
+        "payment-cash-desc": "You have %s$ in cash."
+
     },
     "progress": {
-        "refueling_vehicle": "Refueling Vehicle..."
+        "refueling-vehicle": "Refueling Vehicle..."
     },
     "notify": {
         "not-ev": "The vehicle isn't electric",
         "not-fv": "The vehicle doesn't use fuel",
-        "not_enough_money": "You don't have enough money",
-        "not_enough_space": "You don't have enough space",
-        "jerrycan_not_empty": "The jerrycan isn't empty",
-        "vehicle_full": "The vehicle is already full",
-        "refuel_success": "You refueled the vehicle successfully"
+        "not-enough-money": "You don't have enough money",
+        "not-enough-space": "You don't have enough space",
+        "jerrycan-not-empty": "The jerrycan isn't empty",
+        "vehicle-full": "The vehicle is already full",
+        "refuel-success": "You refueled the vehicle successfully"
     }
 }

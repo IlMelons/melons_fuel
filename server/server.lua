@@ -18,6 +18,31 @@ local function setFuel(netID, fuelAmount)
 	vehicleState:set("fuel", fuel, true)
 end
 
+local function Pay(source, data)
+	local fuelCost = math.ceil(data.Amount * GlobalState.fuelPrice)
+	if not server.PayMoney(source, data.PM, fuelCost) then return end
+
+	local fuelAmount = math.floor(data.Amount)
+	setFuel(data.NetID, fuelAmount)
+end
+
+
+RegisterNetEvent("melons_fuel:server:ElaborateAction", function(data)
+	if not source then return end
+	local playerState = Player(source).state
+	if not playerState.inGasStation then return end
+
+	if not data.Amount or not data.Cost then return end
+	local fuelCost = math.ceil(data.Amount * GlobalState.fuelPrice)
+	if fuelCost ~= data.Cost then return end
+
+	local playerMoney = server.GetPlayerMoney(source, data.PM)
+	if playerMoney < fuelCost then return server.Notify(source, locale("notify.not-enough-money"), "error") end
+
+	Pay(source, data)
+	TriggerClientEvent("melons_fuel:client:PlayRefuelAnim", source, {NetID = data.NetID, Amount = data.Amount}, true)
+end)
+
 RegisterNetEvent("melons_fuel:server:RefuelVehicle", function(data)
 	if not source or not data.entity then return end
 	local playerState = Player(source).state
@@ -29,7 +54,7 @@ RegisterNetEvent("melons_fuel:server:RefuelVehicle", function(data)
 	local vehicleState = Entity(vehicle)?.state
 	local fuelLevel = math.ceil(vehicleState.fuel)
 	local requiredFuel = 100 - fuelLevel
-	if requiredFuel <= 0 then return server.Notify(source, locale("notify.vehicle_full"), "error") end
+	if requiredFuel <= 0 then return server.Notify(source, locale("notify.vehicle-full"), "error") end
 
 	local item, durability = inventory.GetJerrycan(source)
 	if not item or durability <= 0 then return end
@@ -41,32 +66,6 @@ RegisterNetEvent("melons_fuel:server:RefuelVehicle", function(data)
 	TriggerClientEvent("melons_fuel:client:PlayRefuelAnim", source, {netID = data.entity, amount = requiredFuel}, false)
 end)
 
-
-RegisterNetEvent("melons_fuel:server:ConfirmMenu", function(data)
-	if not source or not data.netID or not data.PM or not data.amount or not data.cost then return end
-	local playerState = Player(source).state
-	if not playerState.inGasStation then return end
-
-	---@description Checks if the player has enough money and validates client data
-	local fuelCost = math.ceil(data.amount * GlobalState.fuelPrice)
-	if fuelCost ~= data.cost then return end
-
-	local playerMoney = inventory.GetPlayerMoney(source)
-	if playerMoney < fuelCost then return server.Notify(source, locale("notify.not_enough_money"), "error") end
-
-	TriggerClientEvent("melons_fuel:client:PlayRefuelAnim", source, {netID = data.netID, amount = data.amount, cost = fuelCost}, true)
-end)
-
-RegisterNetEvent("melons_fuel:server:Pay", function(netID, fuelAmount)
-	local fuelCost = math.ceil(fuelAmount * GlobalState.fuelPrice)
-	if not inventory.Pay(source, fuelCost) then return end
-
-	fuelAmount = math.floor(fuelAmount)
-	setFuel(netID, fuelAmount)
-
-	server.Notify(source, locale("notify.refuel_success"):format(totalCost), "success")
-end)
-
 RegisterNetEvent("melons_fuel:server:BuyJerrycan", function()
     if not source then return end
 	local playerState = Player(source).state
@@ -75,16 +74,16 @@ RegisterNetEvent("melons_fuel:server:BuyJerrycan", function()
 		local item, durability = inventory.GetJerrycan(source)
 		if not item or item.name ~= "WEAPON_PETROLCAN" then return end
 
-		if durability > 0 then return server.Notify(source, locale("notify.jerrycan_not_empty"), "error") end
+		if durability > 0 then return server.Notify(source, locale("notify.jerrycan-not-empty"), "error") end
 
 		if not inventory.Pay(source, jerrycanCost) then return end
 		inventory.UpdateJerrycan(source, item, 100)
 	else
 		if not inventory.CanCarry(source, "WEAPON_PETROLCAN") then
-			return server.Notify(source, locale("notify.not_enough_space"), "error")
+			return server.Notify(source, locale("notify.not-enough-space"), "error")
 		end
 		local money = inventory.GetItem(source, "money")
-		if money.count < jerrycanCost then return server.Notify(source, locale("notify.not_enough_money"), "error") end
+		if money.count < jerrycanCost then return server.Notify(source, locale("notify.not-enough-money"), "error") end
 		if not inventory.Pay(source, jerrycanCost) then return end
 		inventory.AddItem(source, "WEAPON_PETROLCAN", 1)
 	end
