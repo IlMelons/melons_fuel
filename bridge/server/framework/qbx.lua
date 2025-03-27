@@ -14,3 +14,18 @@ function server.Notify(source, msg, type)
         type = type or "inform",
     })
 end
+
+function server.GetPlayerMoney(source)
+    local player = QBX:GetPlayer(source)
+    local cashMoney = player.PlayerData.money["cash"]
+    local bankMoney = player.PlayerData.money["bank"]
+
+    return cashMoney, bankMoney
+end
+
+function server.PayMoney(source, paymentMethod, amount)
+    local player = QBX:GetPlayer(source)
+    local paymentSuccess = player.Functions.RemoveMoney(paymentMethod, amount)
+
+    return paymentSuccess
+end
