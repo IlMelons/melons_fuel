@@ -94,21 +94,27 @@ RegisterNetEvent("melons_fuel:client:RefuelVehicle", function(data)
 	local vehicleState = Entity(data.entity).state
 	local currentFuel = vehicleState.fuel or GetVehicleFuelLevel(data.entity)
 
-	local money = lib.callback.await("melons_fuel:server:GetPlayerMoney", false)
+	local cashMoney, bankMoney = lib.callback.await("melons_fuel:server:GetPlayerMoney", false)
 
-	fuel = lib.inputDialog(locale("input.select_amount"), {
-		{type = "input", label = locale("input.money"), default = locale("input.money_default"):format(money), disabled = true},
-		{type = "slider", label = locale("input.select_amount"), default = currentFuel, min = 0, max = 100},
+	input = lib.inputDialog(locale("input.select-amount"), {
+		{type = "input", label = locale("input.bank-money"), default = locale("input.bank-money-default"):format(bankMoney), disabled = true},
+		{type = "input", label = locale("input.cash-money"), default = locale("input.cash-money-default"):format(cashMoney), disabled = true},
+		{type = "select", label = locale("input.select-payment-method"), options = {
+			{value = "bank", label = locale("input.bank")},
+			{value = "cash", label = locale("input.cash")},
+		}, required = true},
+		{type = "slider", label = locale("input.select-amount"), default = currentFuel, min = 0, max = 100},
 	})
-	if not fuel then return end
+	if not input then return end
 
-	local inputFuel = tonumber(fuel[2])
+	local inputPM = input[3]
+	local inputFuel = tonumber(input[4])
 	local fuelAmount = inputFuel - currentFuel
-	if not fuelAmount then return end
-	TriggerEvent("melons_fuel:client:ConfirmMenu", data.entity, fuelAmount)
+	if not inputPM or not fuelAmount then return end
+	TriggerEvent("melons_fuel:client:ConfirmMenu", data.entity, inputPM, fuelAmount)
 end)
 
-RegisterNetEvent("melons_fuel:client:ConfirmMenu", function(vehicle, fuelAmount)
+RegisterNetEvent("melons_fuel:client:ConfirmMenu", function(vehicle, paymentMethod, fuelAmount)
 	local fuelPrice = GlobalState.fuelPrice
 	local totalCost = math.ceil(fuelAmount * fuelPrice)
 	local vehicleNetID = NetworkGetEntityIsNetworked(vehicle) and VehToNet(vehicle)
@@ -123,6 +129,7 @@ RegisterNetEvent("melons_fuel:client:ConfirmMenu", function(vehicle, fuelAmount)
 				serverEvent = "melons_fuel:server:ConfirmMenu",
 				args = {
 					netID = vehicleNetID,
+					PM = paymentMethod,
 					amount = fuelAmount,
 					cost = totalCost,
 				}

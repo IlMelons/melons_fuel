@@ -43,7 +43,7 @@ end)
 
 
 RegisterNetEvent("melons_fuel:server:ConfirmMenu", function(data)
-	if not source or not data.netID or not data.amount or not data.cost then return end
+	if not source or not data.netID or not data.PM or not data.amount or not data.cost then return end
 	local playerState = Player(source).state
 	if not playerState.inGasStation then return end
 
