@@ -1,8 +1,9 @@
 Config = lib.load("config.config")
 
 lib.callback.register("melons_fuel:server:GetPlayerMoney", function(source)
-	local money = inventory.GetPlayerMoney(source)
-	return money
+	local cashMoney, bankMoney = server.GetPlayerMoney(source)
+
+	return cashMoney, bankMoney
 end)
 
 local function setFuel(netID, fuelAmount)
