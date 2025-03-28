@@ -1,5 +1,10 @@
-# [BETA TEST/INCOMPLETE] Melons Fuel
+# Melons Fuel
 Fuel management resource, the resource is a rework of cdn-fuel plus some more modern and optimized functions of ox_fuel, the purpose of this resource is to bring an advanced system like cdn-fuel but at the same time safe and optimized like ox_lib
+
+## LICENSE
+Users are hereby informed that the license in the repository applies ONLY AND EXCLUSIVELY to the parts of the code used by other resources (ox_fuel, cdn-fuel), therefore modifications to the code applied by the undersigned (IlMelons) are protected by the following rules:
+- The ONLY permission granted is to use and modify for private purposes on your own FiveM server.
+- It's strictly forbidden to redistribute the code or create derivatives that use the parts of the code and the modifications applied by the author (IlMelons)
 
 ## Dependencies
 - ox_lib
