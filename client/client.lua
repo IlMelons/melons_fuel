@@ -83,8 +83,13 @@ RegisterNetEvent("melons_fuel:client:ReturnNozzle", function()
 end)
 
 local function SecondaryMenu(data)
-	local totalCost = math.ceil(data.fuelAmount * GlobalState.fuelPrice)
-	local vehNetID = NetworkGetEntityIsNetworked(data.Veh) and VehToNet(data.Veh)
+	if data.PT == "fuel" then
+		local totalCost = math.ceil(data.fuelAmount * GlobalState.fuelPrice)
+		local vehNetID = NetworkGetEntityIsNetworked(data.Veh) and VehToNet(data.Veh)
+	elseif data.PT == "jerrycan" then
+		local totalCost = Config.JerrycanPrice
+	end
+	
 	local cashMoney, bankMoney = lib.callback.await("melons_fuel:server:GetPlayerMoney", false)
 
 	lib.registerContext({
@@ -97,7 +102,7 @@ local function SecondaryMenu(data)
 				icon = "building-columns",
 				onSelect = function()
 					TriggerServerEvent("melons_fuel:server:ElaborateAction", {
-						NetID = vehNetID,
+						NetID = vehNetID or false,
 						PM = "bank",
 						PT = data.PT,
 						Amount = data.fuelAmount,
@@ -111,7 +116,7 @@ local function SecondaryMenu(data)
 				icon = "money-bill",
 				onSelect = function()
 					TriggerServerEvent("melons_fuel:server:ElaborateAction", {
-						NetID = vehNetID,
+						NetID = vehNetID or false,
 						PM = "cash",
 						PT = data.PT,
 						Amount = data.fuelAmount,
@@ -168,6 +173,12 @@ RegisterNetEvent("melons_fuel:client:RefuelVehicle", function(data)
 	if not fuelAmount then return end
 
 	SecondaryMenu({Veh = data.entity, PT = "fuel", fuelAmount = fuelAmount})
+end)
+
+RegisterNetEvent("melons_fuel:client:BuyJerrycan", function(data)
+	if not data.entity or not CheckFuelState("buy_jerrycan") then return end
+
+	SecondaryMenu({PT = "jerrycan"})
 end)
 
 RegisterNetEvent("melons_fuel:client:PlayRefuelAnim", function(data, isPump)

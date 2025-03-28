@@ -70,7 +70,7 @@ function target.AddModel(model, isEV)
             canInteract = function()
                 return CheckFuelState("buy_jerrycan")
             end,
-            serverEvent = "melons_fuel:server:BuyJerrycan",
+            event = "melons_fuel:client:BuyJerrycan",
         },
     })
 end
