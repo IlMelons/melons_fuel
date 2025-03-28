@@ -6,16 +6,6 @@ local ox_inventory = exports.ox_inventory
 
 inventory = {}
 
-function inventory.GetPlayerMoney(source)
-    local money = ox_inventory:GetItemCount(source, "money")
-    return money
-end
-
-function inventory.Pay(source, amount)
-    local success = ox_inventory:RemoveItem(source, "money", amount)
-    return success
-end
-
 function inventory.GetItem(source, itemName)
     local item = ox_inventory:GetItem(source, itemName, nil, false)
     return item
