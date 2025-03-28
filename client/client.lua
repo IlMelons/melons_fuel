@@ -83,13 +83,8 @@ RegisterNetEvent("melons_fuel:client:ReturnNozzle", function()
 end)
 
 local function SecondaryMenu(data)
-	if data.PT == "fuel" then
-		local totalCost = math.ceil(data.fuelAmount * GlobalState.fuelPrice)
-		local vehNetID = NetworkGetEntityIsNetworked(data.Veh) and VehToNet(data.Veh)
-	elseif data.PT == "jerrycan" then
-		local totalCost = Config.JerrycanPrice
-	end
-	
+	local totalCost = (data.PT == "fuel") and math.ceil(data.fuelAmount * GlobalState.fuelPrice) or Config.JerrycanPrice
+	local vehNetID = (data.PT == "fuel") and NetworkGetEntityIsNetworked(data.Veh) and VehToNet(data.Veh)
 	local cashMoney, bankMoney = lib.callback.await("melons_fuel:server:GetPlayerMoney", false)
 
 	lib.registerContext({
