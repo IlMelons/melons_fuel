@@ -17,6 +17,16 @@ function utils.CreateBlip(coords, ev)
     return blip
 end
 
+function utils.LoadAudioBank()
+    if not RequestScriptAudioBank("audiodirectory/melons_fuel", false) then
+        while not RequestScriptAudioBank("audiodirectory/melons_fuel", false) do
+            Wait(0)
+        end
+    end
+
+    return true
+end
+
 function utils.RotateOffset(offset, heading)
     local rad = math.rad(heading)
     local cosH = math.cos(rad)

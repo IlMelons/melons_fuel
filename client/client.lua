@@ -17,6 +17,9 @@ RegisterNetEvent("melons_fuel:client:TakeNozzle", function(data, pumpType)
 
 	local playerPed = cache.ped or PlayerPedId()
 	lib.requestAnimDict("anim@am_hold_up@male", 300)
+	if utils.LoadAudioBank() then
+		PlaySoundFromEntity(-1, "melons_take_fv_nozzle", data.entity, "melons_fuel", true, 0)
+	end
 	TaskPlayAnim(playerPed, "anim@am_hold_up@male", "shoplift_high", 2.0, 8.0, -1, 50, 0, 0, 0, 0)
 	Wait(300)
 	StopAnimTask(playerPed, "anim@am_hold_up@male", "shoplift_high", 1.0)
@@ -71,8 +74,11 @@ RegisterNetEvent("melons_fuel:client:TakeNozzle", function(data, pumpType)
 	end)
 end)
 
-RegisterNetEvent("melons_fuel:client:ReturnNozzle", function()
+RegisterNetEvent("melons_fuel:client:ReturnNozzle", function(data, pumpType)
 	if not CheckFuelState("return_nozzle") then return end
+	if utils.LoadAudioBank() then
+		PlaySoundFromEntity(-1, ("melons_return_%s_nozzle"):format(pumpType), data.entity, "melons_fuel", true, 0)
+	end
 	SetFuelState("holding", "null")
 	TargetCreated = false
 	Wait(250)
@@ -189,6 +195,11 @@ RegisterNetEvent("melons_fuel:client:PlayRefuelAnim", function(data, isPump)
 
 	local refuelTime = data.Amount * 2000
 	SetFuelState("refueling", true)
+	local pumpType = playerState.holding == "fv_nozzle" and "fv" or playerState.holding == "ev_nozzle" and "ev"
+	local soundId = GetSoundId()
+	if utils.LoadAudioBank() then
+		PlaySoundFromEntity(soundId, ("melons_%s_start"):format(pumpType), FuelEntities.nozzle, "melons_fuel", true, 0)
+	end
 	if lib.progressCircle({
 		duration = refuelTime,
 		label = locale("progress.refueling-vehicle"),
@@ -201,6 +212,9 @@ RegisterNetEvent("melons_fuel:client:PlayRefuelAnim", function(data, isPump)
 		},
 		disable = {move = true, car = true, combat = true},
 	}) then
+		StopSound(soundId)
+		ReleaseSoundId(soundId)
+		PlaySoundFromEntity(-1, ("melons_%s_stop"):format(pumpType), FuelEntities.nozzle, "melons_fuel", true, 0)
 		SetFuelState("refueling", false)
 		client.Notify(locale("notify.refuel-success"), "success")
 	end

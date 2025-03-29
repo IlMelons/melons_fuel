@@ -5,7 +5,7 @@ lua54 "yes"
 name "melons_fuel"
 description "Fuel System for FiveM"
 author "IlMelons"
-version "0.1.2"
+version "0.1.3"
 repository "https://www.github.com/IlMelons/melons_fuel"
 
 ox_lib "locale"
@@ -27,5 +27,10 @@ server_scripts {
 }
 
 files {
+    "data/melons_fuel_sounds.dat54.rel",
+    "audiodirectory/melons_fuel.awc",
     "locales/*.json",
 }
+
+data_file "AUDIO_WAVEPACK"  "audiodirectory"
+data_file "AUDIO_SOUNDDATA" "data/melons_fuel_sounds.dat"

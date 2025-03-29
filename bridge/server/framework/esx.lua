@@ -12,20 +12,25 @@ end
 
 function server.GetPlayerMoney(source, account)
     local xPlayer = ESX.GetPlayerFromId(source)
-    local cashMoney = xPlayer.accounts.cash
-    local bankMoney = xPlayer.accounts.bank
-
-    if account == "bank" then
-        return bankMoney
-    elseif account == "cash" then
-        return cashMoney
-    else
-        return cashMoney, bankMoney
+    local cashMoney = nil
+    local bankMoney = nil
+    for _, data in pairs(xPlayer.accounts) do
+        if data.name == account then
+            return data.money
+        elseif data.name == "money" then
+            cashMoney = data.money
+        elseif data.name == "bank" then
+            bankMoney = data.money
+        end
     end
+    return cashMoney, bankMoney
 end
 
 function server.PayMoney(source, paymentMethod, amount)
     local xPlayer = ESX.GetPlayerFromId(source)
+    if paymentMethod == "cash" then
+        paymentMethod = "money"
+    end
     xPlayer.removeAccountMoney(paymentMethod, amount)
 
     return true

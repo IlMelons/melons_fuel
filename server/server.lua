@@ -20,17 +20,17 @@ end
 
 RegisterNetEvent("melons_fuel:server:ElaborateAction", function(data)
 	if not source then return end
-	
+
 	local playerState = Player(source).state
 	if not playerState.inGasStation then return end
 
 	local price = data.PT == "fuel" and math.ceil(data.Amount * GlobalState.fuelPrice) or Config.JerrycanPrice
 	local playerMoney = server.GetPlayerMoney(source, data.PM)
 	if playerMoney < price then return server.Notify(source, locale("notify.not-enough-money"), "error") end
-	
+
 	if data.PT == "fuel" then
 		if not server.PayMoney(source, data.PM, price) then return end
-		
+
 		local fuelAmount = math.floor(data.Amount)
 		setFuel(data.NetID, fuelAmount)
 
@@ -40,16 +40,16 @@ RegisterNetEvent("melons_fuel:server:ElaborateAction", function(data)
 			local item, durability = inventory.GetJerrycan(source)
 			if not item or item.name ~= "WEAPON_PETROLCAN" then return end
 			if durability > 0 then return server.Notify(source, locale("notify.jerrycan-not-empty"), "error") end
-			
+
 			if not server.PayMoney(source, data.PM, price) then return end
 			inventory.UpdateJerrycan(source, item, 100)
 		else
 			if not inventory.CanCarry(source, "WEAPON_PETROLCAN") then
 				return server.Notify(source, locale("notify.not-enough-space"), "error")
 			end
-			
+
 			if not server.PayMoney(source, data.PM, price) then return end
-			
+
 			inventory.AddItem(source, "WEAPON_PETROLCAN", 1)
 		end
 	end
@@ -75,5 +75,5 @@ RegisterNetEvent("melons_fuel:server:RefuelVehicle", function(data)
 	inventory.UpdateJerrycan(source, item, newDurability)
 
 	setFuel(data.entity, requiredFuel)
-	TriggerClientEvent("melons_fuel:client:PlayRefuelAnim", source, {netID = data.entity, amount = requiredFuel}, false)
+	TriggerClientEvent("melons_fuel:client:PlayRefuelAnim", source, {NetID = data.entity, Amount = requiredFuel}, false)
 end)
