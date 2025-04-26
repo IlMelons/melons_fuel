@@ -27,10 +27,11 @@ RegisterNetEvent("melons_fuel:client:TakeNozzle", function(data, pumpType)
 
 	local pump = GetEntityModel(data.entity)
     local pumpCoords = GetEntityCoords(data.entity)
-	local nozzleModel = Config.NozzleType[pumpType]
+	local nozzleModel = Config.NozzleType[pumpType].hash
+	local handOffset = Config.NozzleType[pumpType].offsets.hand
 	local lefthand = GetPedBoneIndex(playerPed, 18905)
 	FuelEntities.nozzle = CreateObject(nozzleModel, 1.0, 1.0, 1.0, true, true, false)
-	AttachEntityToEntity(FuelEntities.nozzle, playerPed, lefthand, 0.13, 0.04, 0.01, -42.0, -115.0, -63.42, 0, 1, 0, 1, 0, 1)
+	AttachEntityToEntity(FuelEntities.nozzle, playerPed, lefthand, handOffset[1], handOffset[2], handOffset[3], handOffset[4], handOffset[5], handOffset[6], false, true, false, true, 0, true)
 
     RopeLoadTextures()
     while not RopeAreTexturesLoaded() do
@@ -46,7 +47,8 @@ RegisterNetEvent("melons_fuel:client:TakeNozzle", function(data, pumpType)
 
 	local playerCoords = GetEntityCoords(playerPed)
 	local nozzlePos = GetEntityCoords(FuelEntities.nozzle)
-	nozzlePos = GetOffsetFromEntityInWorldCoords(FuelEntities.nozzle, 0.0, -0.033, -0.195)
+	local nozzleOffset = Config.NozzleType[pumpType].offsets.rope
+	nozzlePos = GetOffsetFromEntityInWorldCoords(FuelEntities.nozzle, nozzleOffset.x, nozzleOffset.y, nozzleOffset.z)
 	local pumpHeading = GetEntityHeading(data.entity)
 	local rotatedPumpOffset = utils.RotateOffset(Config.Pumps[pump].offset, pumpHeading)
 	local newPumpCoords = pumpCoords + rotatedPumpOffset

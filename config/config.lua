@@ -4,7 +4,7 @@ return {
     JerrycanPrice = 500,
     FuelUsage = 10.0,
     NozzleType = {
-        ["fv"] = `prop_cs_fuel_nozle`,
+        ["fv"] = {hash = `prop_cs_fuel_nozle`, offsets = {hand = {0.13, 0.04, 0.01, -42.0, -115.0, -63.42}, rope = vec3(0.0, -0.033, -0.195)}},
     },
     RopeType = { -- Options: 1-2-3-4-5; 1: Khaki Color, Kind of Thick, 2: Very Thick Khaki Rope, 3: Very Thick Black Rope, 4: Very Thin Black Rope, 5: Same as 3
         ["fv"] = 1,
