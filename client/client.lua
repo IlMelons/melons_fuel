@@ -164,16 +164,15 @@ RegisterNetEvent("melons_fuel:client:RefuelVehicle", function(data)
 	if playerState.holding == "fv_nozzle" and isElectric then return client.Notify(locale("notify.not-fv"), "error") end
 
 	local vehicleState = Entity(data.entity).state
-	local currentFuel = vehicleState.fuel or GetVehicleFuelLevel(data.entity)
-
+	local currentFuel = math.ceil(vehicleState.fuel or GetVehicleFuelLevel(data.entity))
 	local input = lib.inputDialog(locale("input.select-amount"), {
-		{type = "slider", label = locale("input.select-amount"), default = currentFuel, min = 0, max = 100},
+		{type = "slider", label = locale("input.select-amount"), default = currentFuel, min = currentFuel, max = 100},
 	})
 	if not input then return end
 
 	local inputFuel = tonumber(input[1])
 	local fuelAmount = inputFuel - currentFuel
-	if not fuelAmount then return end
+	if not fuelAmount or fuelAmount <= 0 then client.Notify(locale("notify.vehicle-full"), "error") return end
 
 	SecondaryMenu({Veh = data.entity, PT = "fuel", fuelAmount = fuelAmount})
 end)
@@ -195,7 +194,6 @@ RegisterNetEvent("melons_fuel:client:PlayRefuelAnim", function(data, isPump)
 	TaskTurnPedToFaceEntity(playerPed, vehicle, 500)
 	Wait(500)
 
-	local refuelTime = data.Amount * 2000
 	SetFuelState("refueling", true)
 	local pumpType = playerState.holding == "fv_nozzle" and "fv" or playerState.holding == "ev_nozzle" and "ev"
 	local soundId = GetSoundId()

@@ -12,8 +12,8 @@ end
 
 function server.GetPlayerMoney(source, account)
     local Player = QBCore.Functions.GetPlayer(source)
-    local cashMoney = Player.PlayerData.money["cash"]
-    local bankMoney = Player.PlayerData.money["bank"]
+    local cashMoney = Player.Functions.GetMoney('cash')
+    local bankMoney = Player.Functions.GetMoney('bank')
 
     if account == "bank" then
         return bankMoney
