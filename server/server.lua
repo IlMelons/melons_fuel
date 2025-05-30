@@ -66,7 +66,7 @@ RegisterNetEvent("melons_fuel:server:RefuelVehicle", function(data)
 	local vehicleState = Entity(vehicle)?.state
 	local fuelLevel = math.ceil(vehicleState.fuel)
 	local requiredFuel = 100 - fuelLevel
-	if requiredFuel <= 0 then return server.Notify(source, locale("notify.vehicle-full"), "error") end
+	if requiredFuel <= 0 then server.Notify(source, locale("notify.vehicle-full"), "error") return end
 
 	local item, durability = inventory.GetJerrycan(source)
 	if not item or durability <= 0 then return end
