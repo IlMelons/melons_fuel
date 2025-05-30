@@ -194,6 +194,7 @@ RegisterNetEvent("melons_fuel:client:PlayRefuelAnim", function(data, isPump)
 	TaskTurnPedToFaceEntity(playerPed, vehicle, 500)
 	Wait(500)
 
+	local refuelTime = data.Amount * 2000
 	SetFuelState("refueling", true)
 	local pumpType = playerState.holding == "fv_nozzle" and "fv" or playerState.holding == "ev_nozzle" and "ev"
 	local soundId = GetSoundId()
