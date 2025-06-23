@@ -166,7 +166,7 @@ RegisterNetEvent("melons_fuel:client:RefuelVehicle", function(data)
 	local vehicleState = Entity(data.entity).state
 	local currentFuel = math.ceil(vehicleState.fuel or GetVehicleFuelLevel(data.entity))
 	local input = lib.inputDialog(locale("input.select-amount"), {
-		{type = "slider", label = locale("input.select-amount"), default = currentFuel, min = currentFuel, max = 100},
+		{type = "slider", label = locale("input.select-amount"), default = math.floor(currentFuel), min = currentFuel, max = 100},
 	})
 	if not input then return end
 
